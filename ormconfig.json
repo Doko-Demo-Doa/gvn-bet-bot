@@ -1,0 +1,20 @@
+{
+  "type": "sqlite",
+  "database": "gvn-bet-bot.sqlite",
+  "synchronize": true,
+  "logging": false,
+  "entities": [
+     "src/entities/**/*.ts"
+  ],
+  "migrations": [
+     "src/migration/**/*.ts"
+  ],
+  "subscribers": [
+     "src/subscriber/**/*.ts"
+  ],
+  "cli": {
+     "entitiesDir": "src/entities",
+     "migrationsDir": "src/migration",
+     "subscribersDir": "src/subscriber"
+  }
+}
