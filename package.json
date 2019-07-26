@@ -1,0 +1,33 @@
+{
+  "name": "gvn-bet-bot",
+  "version": "1.0.0",
+  "description": "Bet bot for GameVN discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Doko-Demo-Doa/gvn-bet-bot.git"
+  },
+  "keywords": [
+    "gvn",
+    "bet",
+    "bot",
+    "discord"
+  ],
+  "author": "Doko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Doko-Demo-Doa/gvn-bet-bot/issues"
+  },
+  "homepage": "https://github.com/Doko-Demo-Doa/gvn-bet-bot#readme",
+  "dependencies": {
+    "sequelize": "^5.10.3",
+    "sqlite3": "^4.0.9"
+  },
+  "devDependencies": {
+    "prettier": "^1.18.2",
+    "standard": "^13.1.0"
+  }
+}
