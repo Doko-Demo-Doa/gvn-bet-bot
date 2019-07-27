@@ -1,6 +1,6 @@
 {
   "type": "sqlite",
-  "database": "gvn-bet-bot.sqlite",
+  "database": "NadekoBot.db",
   "synchronize": true,
   "logging": false,
   "entities": [

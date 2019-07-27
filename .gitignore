@@ -65,3 +65,6 @@ yarn.lock
 package-lock.json
 *.sqlite
 build/
+docs/
+*.db
+*.db-*
