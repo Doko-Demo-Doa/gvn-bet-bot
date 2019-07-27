@@ -4,6 +4,7 @@
   "description": "Bet bot for GameVN discord",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "precommit": "lint-staged && npm run lint",
     "prepush": "npm run git-hook && npm run fixcode",
@@ -42,10 +43,14 @@
   "homepage": "https://github.com/Doko-Demo-Doa/gvn-bet-bot#readme",
   "standard": {
     "parser": "@typescript-eslint/parser",
-    "plugins": [ "@typescript-eslint/eslint-plugin" ]
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "discord.js": "^11.5.1",
+    "node-fetch": "^2.6.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.0.9",
     "typeorm": "^0.2.18"

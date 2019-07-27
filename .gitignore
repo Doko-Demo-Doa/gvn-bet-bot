@@ -63,3 +63,5 @@ typings/
 # Lock files
 yarn.lock
 package-lock.json
+*.sqlite
+build/
