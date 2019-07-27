@@ -29,7 +29,8 @@
     "discord.js-commando": "^0.10.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^4.0.9",
-    "typeorm": "^0.2.18"
+    "typeorm": "^0.2.18",
+    "uws": "^100.0.1"
   },
   "devDependencies": {
     "@types/node": "^12.6.8",
