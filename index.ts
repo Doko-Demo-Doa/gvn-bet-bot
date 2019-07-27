@@ -1,6 +1,7 @@
-// import Discord from 'discord.js'
 import 'reflect-metadata'
 import './src/app-loader'
+
+require('dotenv').config()
 
 /* import {createConnection} from "typeorm";
 import {User} from "./src/entities/user";

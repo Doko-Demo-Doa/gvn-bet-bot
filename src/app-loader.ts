@@ -16,4 +16,4 @@ client.on('message', msg => {
     .catch(e => console.log(e))
 })
 
-client.login('NTk2MDIyMjk0NTgxNjA4NjEz.XTw0Mw.SdYIuimjyEsUcm2OY9v38Q3T6JA')
+client.login(process.env.DISCORD_TOKEN)
