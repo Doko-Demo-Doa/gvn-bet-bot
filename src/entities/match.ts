@@ -1,34 +1,22 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-
 @Entity({ name: 'DiscordMatch' })
 export class DiscordMatch {
   @PrimaryGeneratedColumn({ name: 'Id'})
   id: number;
 
-  @Column({ name: 'AvatarId' })
-  avatarId: string;
+  @Column({ name: 'Team1Name' })
+  team1Name: string;
 
   @Column()
-  discriminator: string;
+  team1Rate: string;
 
-  userId: number;
+  @Column({ name: 'Team2Name' })
+  team2Name: string;
 
-  dateAdded: string;
+  @Column()
+  team2Rate: string;
 
-  username: string;
-
-  clubId: number;
-
-  lastLevelUp: string;
-
-  notifyOnLevelUp: number;
-
-  lastXpGain: string;
-
-  totalXp: number;
-
-  isClubAdmin: number;
-
-  currencyAmount: number;
+  @Column()
+  startDate: Date;
 }
