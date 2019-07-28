@@ -1,6 +1,6 @@
 require('dotenv').config()
-import 'reflect-metadata'
-import './src/app-loader'
+require('reflect-metadata')
+require('./src/app-loader')
 
 
 /* import {createConnection} from "typeorm";
