@@ -7,7 +7,7 @@ const parser = require('discord-command-parser')
 const commandArray = require('./commands/index')
 
 const COMMAND_PREFIX = '.'
-const PIN_THRESHOLD = 1
+const PIN_THRESHOLD = 5
 
 const client = new Commando.Client({
   owner: process.env.OWNER,
