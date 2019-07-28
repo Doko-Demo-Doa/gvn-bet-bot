@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 
-@Entity({ name: 'DiscordMatch' })
+@Entity({ name: 'DiscordUser' })
 export class DiscordUser {
   @PrimaryGeneratedColumn({ name: 'Id'})
   id: number;
