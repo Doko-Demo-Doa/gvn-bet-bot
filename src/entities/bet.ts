@@ -13,9 +13,13 @@ export class DiscordBet {
   @PrimaryGeneratedColumn({ name: "Id" })
   id: number;
 
+  @Column({ name: 'Amount' })
   amount: number;
 
-  team1Won: boolean;
+  team1Won: string;
+
+  @Column({ name: 'DateAdded' })
+  dateAdded: string;
 
   @OneToOne(type => DiscordUser)
   @JoinColumn()

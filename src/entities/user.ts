@@ -8,27 +8,36 @@ export class DiscordUser {
   @Column({ name: 'AvatarId' })
   avatarId: string;
 
-  @Column({ name: 'Discriminator' })
+  @Column({ name: 'Discriminator', readonly: true })
   discriminator: string;
 
-  @Column({ name: 'UserId' })
+  @Column({ name: 'UserId', readonly: true })
   userId: number;
 
+  @Column({ name: 'DateAdded' })
   dateAdded: string;
 
+  @Column({ name: 'Username' })
   username: string;
 
+  @Column({ name: 'ClubId' })
   clubId: number;
 
+  @Column({ name: 'LastLevelUp' })
   lastLevelUp: string;
 
+  @Column({ name: 'NotifyOnLevelUp'})
   notifyOnLevelUp: number;
 
+  @Column({ name: 'LastXpGain'})
   lastXpGain: string;
 
+  @Column({ name: 'TotalXp'})
   totalXp: number;
 
+  @Column({ name: 'IsClubAdmin'})
   isClubAdmin: number;
 
+  @Column({ name: 'CurrencyAmount'})
   currencyAmount: number;
 }
