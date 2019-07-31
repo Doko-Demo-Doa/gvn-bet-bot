@@ -59,7 +59,6 @@ export class BetCreate extends Command {
   }
 
   async run(message: CommandMessage, args: object | any | string | string[]): Promise<Message | Message[]> {
-    console.log(args)
     const m = new DiscordMatch();
     m.team1Name = args['-t1'];
     m.team2Name = args['-t2'];

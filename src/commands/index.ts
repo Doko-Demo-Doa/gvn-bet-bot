@@ -1,5 +1,7 @@
-import { BetCreate } from './bet-create'
+import { BetCreate } from './bet-create';
+import { BetList } from './bet-list';
 
 module.exports = [
-  BetCreate
+  BetCreate,
+  BetList
 ]
