@@ -1,6 +1,10 @@
 import { Command, CommandMessage } from 'discord.js-commando';
 import { Message } from 'discord.js';
+import moment from 'moment';
 import { DiscordUser } from '../entities/user';
+import { DiscordBet } from '../entities/bet';
+import { DiscordMatch } from '../entities/match';
+
 const stripIndents = require('common-tags').stripIndents;
 
 const WAIT_TIME = 100
@@ -12,7 +16,7 @@ export class BetCreate extends Command {
       group: 'bet',
       memberName: 'createbet',
       description: 'Tạo team trong trận bet. Chỉ admin mới được tạo',
-      examples: ["createbet -t1 'Vietnam' -a1 0.5 -t2 'Thailand' -a2 0.4"],
+      examples: ["createbet -t1 'Vietnam' -a1 0.5 -t2 'Thailand' -a2 0.4 -time \"2019-09-12 20:14\""],
       args: [
         {
           key: '-t1',
@@ -41,6 +45,14 @@ export class BetCreate extends Command {
           prompt: 'Tỉ lệ team 2, số tiền thắng sẽ bằng số tiền cược nhân với tỉ lệ này',
           type: 'float',
           wait: WAIT_TIME
+        },
+        {
+          key: '-time',
+          label: 'Chọn thời điểm bắt đầu',
+          prompt: 'Chọn thời điểm bắt đầu của trận đấu. Sau khi trận đấu bắt đầu, không ai có thể đặt bet tiếp.',
+          type: 'string',
+          validate: (value: moment.MomentInput) => moment(value, 'YYYY-MM-DD HH:mm').isValid(),
+          wait: WAIT_TIME + 50
         }
       ]
     });
@@ -50,6 +62,14 @@ export class BetCreate extends Command {
     console.log(args)
     const found = await DiscordUser.findOne({ userId: 576834090951507986 })
     console.log(found)
+    console.log(moment('2019-13-12 20:14', 'YYYY-MM-DD HH:mm').isValid())
+
+    const m = new DiscordMatch();
+    m.team1Name = args['-t1'];
+    m.team2Name = args['-t2'];
+    m.team1Rate = args['-a1'];
+    m.team2Rate = args['-a2'];
+
 
     return message.reply(stripIndents`
 			Bet info ** ${args['-t1']} vs ${args['-t2']} ** (ID: 1234)

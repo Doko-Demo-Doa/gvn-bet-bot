@@ -1,22 +1,34 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity({ name: 'DiscordMatch' })
+@Entity({ name: "DiscordMatch" })
 export class DiscordMatch {
-  @PrimaryGeneratedColumn({ name: 'Id'})
+  @PrimaryGeneratedColumn({ name: "Id" })
   id: number;
 
-  @Column({ name: 'Team1Name' })
+  @Column({ name: "Team1Name", nullable: false })
   team1Name: string;
 
-  @Column()
+  @Column({ name: "Team1Rate", nullable: false })
   team1Rate: string;
 
-  @Column({ name: 'Team2Name' })
+  @Column({ name: "Team2Name", nullable: false })
   team2Name: string;
 
-  @Column()
+  @Column({ name: 'Team2Rate', nullable: false })
   team2Rate: string;
 
-  @Column()
-  startDate: Date;
+  /**
+   * Prediction of the match:
+   * 1: Team 1 wins.
+   * 2: Team 2 wins.
+   */
+  @Column({ name: "Column" })
+  result: number;
+
+  /**
+   * Users cannot join after this date.
+   * Will be calculated using dayjs.
+   */
+  @Column({ name: "StartTime" })
+  startTime: Date;
 }
