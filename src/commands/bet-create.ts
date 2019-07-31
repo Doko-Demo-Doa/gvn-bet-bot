@@ -1,5 +1,6 @@
-import { Command, CommandMessage } from 'discord.js-commando'
+import { Command, CommandMessage } from 'discord.js-commando';
 import { Message } from 'discord.js';
+import { DiscordUser } from '../entities/user';
 const stripIndents = require('common-tags').stripIndents;
 
 const WAIT_TIME = 100
@@ -45,8 +46,11 @@ export class BetCreate extends Command {
     });
   }
 
-  run(message: CommandMessage, args: object | any | string | string[]): Promise<Message | Message[]> {
+  async run(message: CommandMessage, args: object | any | string | string[]): Promise<Message | Message[]> {
     console.log(args)
+    const found = await DiscordUser.findOne({ userId: 576834090951507986 })
+    console.log(found)
+
     return message.reply(stripIndents`
 			Bet info ** ${args['-t1']} vs ${args['-t2']} ** (ID: 1234)
 			**❯ Thông tin trận bet: **

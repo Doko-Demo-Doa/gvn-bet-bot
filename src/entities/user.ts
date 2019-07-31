@@ -1,11 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, PrimaryColumn } from 'typeorm'
 
 @Entity({ name: 'DiscordUser' })
-export class DiscordUser {
-  @PrimaryGeneratedColumn({ name: 'Id'})
+export class DiscordUser extends BaseEntity {
+  @PrimaryColumn({ name: 'Id'})
   id: number;
 
-  @Column({ name: 'AvatarId' })
+  @Column({ name: 'AvatarId', readonly: true, type: 'text', nullable: true })
   avatarId: string;
 
   @Column({ name: 'Discriminator', readonly: true })
@@ -14,14 +14,8 @@ export class DiscordUser {
   @Column({ name: 'UserId', readonly: true })
   userId: number;
 
-  @Column({ name: 'DateAdded' })
-  dateAdded: string;
-
   @Column({ name: 'Username' })
   username: string;
-
-  @Column({ name: 'ClubId' })
-  clubId: number;
 
   @Column({ name: 'LastLevelUp' })
   lastLevelUp: string;

@@ -1,7 +1,8 @@
 {
   "type": "sqlite",
   "database": "NadekoBot.db",
-  "synchronize": true,
+  "autoSchemaSync": true,
+  "synchronize": false,
   "logging": false,
   "entities": [
      "src/entities/**/*.ts"
