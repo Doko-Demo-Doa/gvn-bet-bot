@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 
-@Entity({ name: "DiscordMatch" })
-export class DiscordMatch {
+@Entity('DiscordMatch')
+export class DiscordMatch extends BaseEntity {
   @PrimaryGeneratedColumn({ name: "Id" })
   id: number;
 
@@ -22,13 +22,13 @@ export class DiscordMatch {
    * 1: Team 1 wins.
    * 2: Team 2 wins.
    */
-  @Column({ name: "Column" })
+  @Column({ name: "Result", nullable: true })
   result: number;
 
   /**
    * Users cannot join after this date.
    * Will be calculated using dayjs.
    */
-  @Column({ name: "StartTime" })
-  startTime: Date;
+  @Column({ name: "StartTime", nullable: false })
+  startTime: string;
 }

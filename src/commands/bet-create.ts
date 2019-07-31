@@ -60,19 +60,18 @@ export class BetCreate extends Command {
 
   async run(message: CommandMessage, args: object | any | string | string[]): Promise<Message | Message[]> {
     console.log(args)
-    const found = await DiscordUser.findOne({ userId: 576834090951507986 })
-    console.log(found)
-    console.log(moment('2019-13-12 20:14', 'YYYY-MM-DD HH:mm').isValid())
-
     const m = new DiscordMatch();
     m.team1Name = args['-t1'];
     m.team2Name = args['-t2'];
     m.team1Rate = args['-a1'];
     m.team2Rate = args['-a2'];
-
+    m.startTime = args['-time'];
+    
+    const mSaved = await m.save();
 
     return message.reply(stripIndents`
-			Bet info ** ${args['-t1']} vs ${args['-t2']} ** (ID: 1234)
+      Bet info ** ${args['-t1']} vs ${args['-t2']} ** (ID: ${mSaved.id})
+      Trận đấu diễn ra vào: ${args['-time']}
 			**❯ Thông tin trận bet: **
       • Team 1: ${args['-t1']} / Tỉ lệ: ${args['-a1']}
       • Team 2: ${args['-t2']} / Tỉ lệ: ${args['-a2']}

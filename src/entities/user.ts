@@ -8,7 +8,7 @@ export class DiscordUser extends BaseEntity {
   @Column({ name: 'AvatarId', readonly: true, type: 'text', nullable: true })
   avatarId: string;
 
-  @Column({ name: 'Discriminator', readonly: true })
+  @Column({ name: 'Discriminator', nullable: true })
   discriminator: string;
 
   @Column({ name: 'UserId', readonly: true })
