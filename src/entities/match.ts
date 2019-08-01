@@ -31,4 +31,7 @@ export class DiscordMatch extends BaseEntity {
    */
   @Column({ name: "StartTime", nullable: false })
   startTime: string;
+
+  @Column({ name: "GameName", nullable: true })
+  gameName: string;
 }
