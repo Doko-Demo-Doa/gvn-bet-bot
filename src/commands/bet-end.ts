@@ -45,11 +45,8 @@ export class BetEnd extends Command {
       id: args.match
     }});
 
-    /* const targetDC = await client.fetchUser(310246030799011840);
-    console.log(targetDC); */
-
     if (!targetMatch) {
-      return message.reply(`Không có trận nào có ID = ${args.match} cả.`);
+      return message.reply(`Không có trận nào có ID = ${args.id} cả.`);
     }
 
     // Set result for the match.

@@ -37,7 +37,6 @@ export class BetJoin extends Command {
           key: "amount",
           label: "Số tiền muốn đặt",
           prompt: "Vui lòng nhập số tiền mà bạn muốn đặt. Tối thiểu là 1000.",
-          default: 0,
           min: 1000,
           type: "integer"
         }
@@ -59,6 +58,11 @@ export class BetJoin extends Command {
       if (!targetMatch) {
         return message.reply(`Không có trận nào có ID = ${args.match} cả.`);
       }
+
+      if (targetMatch.result) {
+        return message.reply(`Trận này đã kết thúc, không thể bet được.`);
+      }
+
       let joinedSession = await DiscordBet.findOne({
         where: {
           userId: message.author.id,
