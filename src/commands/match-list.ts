@@ -1,27 +1,23 @@
 import { Command, CommandMessage } from "discord.js-commando";
 import { Message } from "discord.js";
 import { DiscordMatch } from "../entities/match";
-import { DiscordBet } from "../entities/bet";
 
 const stripIndents = require("common-tags").stripIndents;
 
 const WAIT_TIME = 100;
 
-/**
- * Get current user's bet list.
- */
-export class BetList extends Command {
+export class MatchList extends Command {
   constructor(client) {
     super(client, {
-      name: "mybetinfo",
+      name: "listbet",
       group: "bet",
-      memberName: "mybetinfo",
-      description: "Liệt kê các lượt bet của bạn.",
-      examples: ["mybetinfo 10"],
+      memberName: "listbet",
+      description: "Liệt kê các trận bet đang diễn ra.",
+      examples: ["listbet -limit 10"],
       args: [
         {
           key: "limit",
-          default: 10,
+          default: 5,
           label: "Giới hạn số lượng",
           prompt: "Nhập số lượng các trận bet đang diễn ra và có thể đặt cược.",
           type: "integer",
@@ -35,18 +31,17 @@ export class BetList extends Command {
     message: CommandMessage,
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
-    const dataset = await DiscordBet.find({
+    const dataset = await DiscordMatch.find({
       take: args["limit"],
-      order: {
-        id: 'ASC'
-      }
+      where: { result: null }
     });
     const resultList = dataset.map(
       n => `
-      • Match ID: ${n.matchId}
-      • Ngày tham gia: ${n.dateAdded}
-      • Team đã đặt: ${n.prediction}
-      • Tiền bet: ${n.amount}
+      Trận đấu diễn ra vào: **${n.startTime}**
+      **❯ Thông tin: **
+      • ID của trận: ${n.id}
+      • Team 1: ${n.team1Name} / Tỉ lệ: ${n.team1Rate}
+      • Team 2: ${n.team2Name} / Tỉ lệ: ${n.team2Rate}
 
       ==================================================`
     );
