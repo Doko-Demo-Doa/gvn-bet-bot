@@ -19,7 +19,7 @@ export class BetList extends Command {
       examples: ["betlist -limit 10"],
       args: [
         {
-          key: "-limit",
+          key: "limit",
           default: 5,
           label: "Liệt kê trận bet",
           prompt: "Nhập số lượng các trận bet đang diễn ra mà bạn muốn xem.",
@@ -35,7 +35,7 @@ export class BetList extends Command {
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
     const dataset = await DiscordMatch.find({
-      take: args["-limit"],
+      take: args["limit"],
       where: { result: null }
     });
     const resultList = dataset.map(

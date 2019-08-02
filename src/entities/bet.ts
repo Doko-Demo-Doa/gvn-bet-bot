@@ -9,6 +9,9 @@ import {
 import { DiscordMatch } from "./match";
 import { DiscordUser } from "./user";
 
+/**
+ * Actual "bet" session.
+ */
 @Entity({ name: "DiscordBet" })
 export class DiscordBet extends BaseEntity {
   @PrimaryGeneratedColumn({ name: "Id" })
@@ -28,11 +31,9 @@ export class DiscordBet extends BaseEntity {
   @Column({ name: 'DateAdded' })
   dateAdded: string;
 
-  @OneToOne(type => DiscordUser)
-  @JoinColumn()
-  user: DiscordUser;
+  @Column({ name: 'UserId' })
+  userId: string;
 
-  @OneToOne(type => DiscordMatch)
-  @JoinColumn()
-  match: DiscordMatch;
+  @Column({ name: 'MatchId' })
+  matchId: string;
 }
