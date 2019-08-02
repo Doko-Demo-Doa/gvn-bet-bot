@@ -42,6 +42,7 @@ export class BetList extends Command {
       n => `
       Trận đấu diễn ra vào: **${n.startTime}**
       **❯ Thông tin: **
+      • ID của trận: ${n.id}
       • Team 1: ${n.team1Name} / Tỉ lệ: ${n.team1Rate}
       • Team 2: ${n.team2Name} / Tỉ lệ: ${n.team2Rate}
 

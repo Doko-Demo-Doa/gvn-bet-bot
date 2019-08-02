@@ -78,7 +78,7 @@ export class BetCreate extends Command {
     const mSaved = await m.save();
 
     return message.reply(stripIndents`
-      Bet info ** ${args['t1']} vs ${args['t2']} ** (ID: ${mSaved.id})
+      Thông tin trận: ** ${args['t1']} vs ${args['t2']} ** (ID: ${mSaved.id})
       Trận đấu diễn ra vào: ${args['time']}
 			**❯ Thông tin trận bet: ${args['g']}**
       • Team 1: ${args['t1']} / Tỉ lệ: ${args['a1']}
