@@ -21,7 +21,7 @@ export class BetList extends Command {
         {
           key: "limit",
           default: 5,
-          label: "Liệt kê trận bet",
+          label: "Giới hạn số lượng",
           prompt: "Nhập số lượng các trận bet đang diễn ra mà bạn muốn xem.",
           type: "integer",
           wait: WAIT_TIME
