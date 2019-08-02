@@ -70,7 +70,7 @@ export class BetJoin extends Command {
       let joinedSession = await DiscordBet.findOne({
         where: {
           userId: message.author.id,
-          match: args.match
+          matchId: args.match
         }
       });
 

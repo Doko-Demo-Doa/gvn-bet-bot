@@ -75,12 +75,11 @@ export class BetEnd extends Command {
         }});
 
         const addedAmount = Math.ceil(session.amount + (session.amount * (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate)));
-        linkedUser.currencyAmount = addedAmount;
+        linkedUser.currencyAmount = linkedUser.currencyAmount + addedAmount;
         linkedUser.save();
 
         const dUserToSend = await client.fetchUser(linkedUser.userId);
-        dUserToSend.send(`Xin chào, bạn đã thắng trận bet có mã ${targetMatch.id}.
-        Số tiền bạn được cộng thêm là ${addedAmount}`)
+        dUserToSend.send(`Xin chào, bạn đã thắng trận bet có mã là: ${targetMatch.id}. Số tiền bạn được cộng thêm là ${addedAmount}`)
       });
 
       return message.reply(`Đã đóng trận bet, trận này có ${winnersCount} bet thủ về bờ và ${totalCount - winnersCount} bet thủ ra đê.`);
