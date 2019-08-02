@@ -21,35 +21,35 @@ export class BetCreate extends Command {
       args: [
         {
           key: 't1',
-          label: 'Chọn Team 1',
+          label: 'Team 1',
           prompt: 'Tên team 1?',
           type: 'string',
           wait: WAIT_TIME
         },
         {
           key: 'a1',
-          label: 'Chọn tỉ lệ Team 1',
+          label: 'Tỷ lệ Team 1',
           prompt: 'Tỉ lệ team 1, số tiền thắng sẽ bằng số tiền cược nhân với tỉ lệ này',
           type: 'float',
           wait: WAIT_TIME
         },
         {
           key: 't2',
-          label: 'Chọn Team 2',
+          label: 'Team 2',
           prompt: 'Tên team 2?',
           type: 'string',
           wait: WAIT_TIME
         },
         {
           key: 'a2',
-          label: 'Chọn tỉ lệ Team 2',
+          label: 'Tỷ lệ Team 2',
           prompt: 'Tỉ lệ team 2, số tiền thắng sẽ bằng số tiền cược nhân với tỉ lệ này',
           type: 'float',
           wait: WAIT_TIME
         },
         {
           key: 'time',
-          label: 'Chọn thời điểm bắt đầu',
+          label: 'Thời điểm bắt đầu',
           prompt: 'Chọn thời điểm bắt đầu của trận đấu. Sau khi trận đấu bắt đầu, không ai có thể đặt bet tiếp.',
           type: 'string',
           validate: (value: moment.MomentInput) => moment(value, 'YYYY-MM-DD HH:mm').isValid(),
@@ -57,7 +57,7 @@ export class BetCreate extends Command {
         },
         {
           key: 'g',
-          label: 'Chọn nhãn game cho trận bet.',
+          label: 'Game của trận bet',
           prompt: 'Tên game, Có thể đặt tuỳ ý, càng gọn càng tốt. VD: dota, csgo',
           type: 'string',
           wait: WAIT_TIME + 50
