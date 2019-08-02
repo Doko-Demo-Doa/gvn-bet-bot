@@ -9,13 +9,13 @@ export class DiscordMatch extends BaseEntity {
   team1Name: string;
 
   @Column({ name: "Team1Rate", nullable: false })
-  team1Rate: string;
+  team1Rate: number;
 
   @Column({ name: "Team2Name", nullable: false })
   team2Name: string;
 
   @Column({ name: 'Team2Rate', nullable: false })
-  team2Rate: string;
+  team2Rate: number;
 
   /**
    * Prediction of the match:

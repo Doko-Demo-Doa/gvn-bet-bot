@@ -29,7 +29,7 @@ export class BetEnd extends Command {
           wait: WAIT_TIME
         },
         {
-          key: 'team',
+          key: 'winner',
           label: 'Team thắng cuộc.',
           prompt: 'Chọn team thắng cuộc. Tiền sẽ được cộng cho tất cả những ai đặt cho team này, không thể sửa đổi.',
           type: 'number',
@@ -48,6 +48,35 @@ export class BetEnd extends Command {
 
     if (!targetMatch) {
       return message.reply(`Không có trận nào có ID = ${args.match} cả.`);
+    }
+
+    // Set result for the match.
+    targetMatch.result = args.winner;
+
+    const betSessions = await DiscordBet.find({
+      where: { matchId: targetMatch.id }
+    });
+
+    const totalCount = betSessions.length;
+    let winnersCount = 0;
+
+    if (betSessions.length > 0) {
+      const winners = betSessions.filter(n => n.prediction === args.winner);
+      winnersCount = winners.length;
+
+      // Only winners get the prize:
+      winners.forEach(async session => {
+        const linkedUser = await DiscordUser.findOne({ where: {
+          userId: session.userId
+        }});
+
+        linkedUser.currencyAmount = Math.ceil(session.amount * (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate));
+        linkedUser.save();
+      });
+
+      return message.reply(`Đã đóng trận bet, trận này có ${winnersCount} bet thủ về bờ và ${totalCount - winnersCount} bet thủ ra đê.`)
+    } else {
+      return message.reply(`Đã đóng trận bet, trận này không có ai đặt cửa.`);
     }
   }
 }

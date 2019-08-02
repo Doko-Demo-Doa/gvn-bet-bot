@@ -15,7 +15,8 @@ export class BetJoin extends Command {
       name: "joinbet",
       group: "bet",
       memberName: "joinbet",
-      description: "Tham gia vào một trận bet. Phải có đủ tiền mới tham gia được.",
+      description:
+        "Tham gia vào một trận bet. Phải có đủ tiền mới tham gia được.",
       examples: ["joinbet 23 1 1200"],
       args: [
         {
@@ -39,7 +40,7 @@ export class BetJoin extends Command {
           default: 0,
           min: 1000,
           type: "integer"
-        },
+        }
       ]
     });
   }
@@ -49,28 +50,30 @@ export class BetJoin extends Command {
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
     try {
-      const targetMatch = await DiscordMatch.findOne({ where: {
-        id: args.match
-      }})
-  
+      const targetMatch = await DiscordMatch.findOne({
+        where: {
+          id: args.match
+        }
+      });
+
       if (!targetMatch) {
         return message.reply(`Không có trận nào có ID = ${args.match} cả.`);
       }
       let joinedSession = await DiscordBet.findOne({
-        where: { 
+        where: {
           userId: message.author.id,
           match: args.match
         }
-      })
-  
+      });
+
       console.log(joinedSession);
-  
+
       if (joinedSession) {
         // Editing a joined session.
         joinedSession.prediction = args.team;
         joinedSession.dateAdded = moment().format("YYYY-MM-DD HH:mm");
         joinedSession.save();
-  
+
         return message.reply(stripIndents`
         Bạn vừa thay đổi cửa đặt cho trận sau:
         Thông tin trận: ** ${targetMatch.team1Name} vs ${targetMatch.team2Name} ** (ID: ${targetMatch.id})
@@ -86,9 +89,11 @@ export class BetJoin extends Command {
           where: {
             userId: message.author.id
           }
-        })
+        });
         if (!targetUser) {
-          return message.reply(`Có lỗi xảy ra, vui lòng báo cho Intel để giải quyết. Tiền ko trừ đâu yên tâm.`);
+          return message.reply(
+            `Có lỗi xảy ra, vui lòng báo cho Intel để giải quyết. Tiền ko trừ đâu yên tâm.`
+          );
         }
         if (targetUser.currencyAmount < args.amount) {
           return message.reply(`Số tiền đặt cược không thể lớn hơn số vốn bạn đang có.
@@ -101,7 +106,7 @@ export class BetJoin extends Command {
         newBet.amount = args.amount;
         newBet.userId = message.author.id;
         newBet.dateAdded = moment().format("YYYY-MM-DD HH:mm");
-  
+
         await newBet.save();
 
         targetUser.currencyAmount = targetUser.currencyAmount - args.amount;
