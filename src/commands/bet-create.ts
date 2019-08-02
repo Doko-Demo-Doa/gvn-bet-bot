@@ -74,6 +74,10 @@ export class BetCreate extends Command {
     m.team2Rate = args['a2'];
     m.startTime = args['time'];
     m.gameName = args['g'];
+
+    if (moment().isAfter(moment(args.g, 'YYYY-MM-DD HH:mm'))) {
+      return message.reply(`Vui lòng nhập ngày giờ hợp lệ.`);
+    }
     
     const mSaved = await m.save();
 

@@ -42,15 +42,20 @@ export class BetEnd extends Command {
 
   async run(message: CommandMessage, args: object | any | string | string[]): Promise<Message | Message[]> {
     const targetMatch = await DiscordMatch.findOne({ where: {
-      id: args.match
+      id: args.id
     }});
 
     if (!targetMatch) {
       return message.reply(`Không có trận nào có ID = ${args.id} cả.`);
     }
 
+    if (targetMatch.result) {
+      return message.reply(`Trận này đã kết thúc, không thể thao tác thêm.`);
+    }
+
     // Set result for the match.
     targetMatch.result = args.winner;
+    targetMatch.save();
 
     const betSessions = await DiscordBet.find({
       where: { matchId: targetMatch.id }
@@ -69,11 +74,11 @@ export class BetEnd extends Command {
           userId: session.userId
         }});
 
-        const addedAmount = Math.ceil(session.amount * (session.amount + (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate)));
+        const addedAmount = Math.ceil(session.amount + (session.amount * (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate)));
         linkedUser.currencyAmount = addedAmount;
         linkedUser.save();
 
-        const dUserToSend = client.client.fetchUser(linkedUser.userId);
+        const dUserToSend = await client.fetchUser(linkedUser.userId);
         dUserToSend.send(`Xin chào, bạn đã thắng trận bet có mã ${targetMatch.id}.
         Số tiền bạn được cộng thêm là ${addedAmount}`)
       });
