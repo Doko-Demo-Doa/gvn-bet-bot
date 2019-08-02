@@ -47,12 +47,21 @@ export class BetJoin extends Command {
     message: CommandMessage,
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
-    const joinedSession = await DiscordBet.findOne({
+    const targetMatchCount = await DiscordMatch.count({ where: {
+      id: args.match
+    }})
+
+    if (targetMatchCount === 0) {
+      return message.reply(`Không có trận nào có ID = ${args.match} cả.`);
+    }
+    let joinedSession = await DiscordBet.findOne({
       where: { 
         userId: message.author.id,
         match: args.match
       }
     })
+
+    console.log(joinedSession);
 
     if (joinedSession) {
       joinedSession.prediction = args.team;
@@ -63,6 +72,7 @@ export class BetJoin extends Command {
       newBet.matchId = args.match;
       newBet.prediction = args.team;
       newBet.amount = args.amount;
+      newBet.userId = message.author.id;
       newBet.dateAdded = moment().format("YYYY-MM-DD HH:mm");
 
       newBet.save();
