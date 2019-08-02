@@ -1,4 +1,3 @@
-import { createBet } from './controllers/create-bet'
 import { MessageReaction, User, Emoji, ReactionEmoji } from 'discord.js';
 
 const Commando = require('discord.js-commando')

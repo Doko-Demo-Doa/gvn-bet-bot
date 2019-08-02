@@ -4,8 +4,7 @@ import moment from 'moment';
 import { DiscordUser } from '../entities/user';
 import { DiscordBet } from '../entities/bet';
 import { DiscordMatch } from '../entities/match';
-
-const stripIndents = require('common-tags').stripIndents;
+import { client } from '../app-loader';
 
 const WAIT_TIME = 100
 
@@ -25,14 +24,14 @@ export class BetEnd extends Command {
           key: 'id',
           label: 'Match ID',
           prompt: 'ID của trận đấu?',
-          type: 'number',
+          type: 'integer',
           wait: WAIT_TIME
         },
         {
           key: 'winner',
           label: 'Team thắng cuộc.',
           prompt: 'Chọn team thắng cuộc. Tiền sẽ được cộng cho tất cả những ai đặt cho team này, không thể sửa đổi.',
-          type: 'number',
+          type: 'integer',
           min: 1,
           max: 2,
           wait: WAIT_TIME
@@ -45,6 +44,9 @@ export class BetEnd extends Command {
     const targetMatch = await DiscordMatch.findOne({ where: {
       id: args.match
     }});
+
+    /* const targetDC = await client.fetchUser(310246030799011840);
+    console.log(targetDC); */
 
     if (!targetMatch) {
       return message.reply(`Không có trận nào có ID = ${args.match} cả.`);
@@ -70,11 +72,16 @@ export class BetEnd extends Command {
           userId: session.userId
         }});
 
-        linkedUser.currencyAmount = Math.ceil(session.amount * (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate));
+        const addedAmount = Math.ceil(session.amount * (session.amount + (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate)));
+        linkedUser.currencyAmount = addedAmount;
         linkedUser.save();
+
+        const dUserToSend = client.client.fetchUser(linkedUser.userId);
+        dUserToSend.send(`Xin chào, bạn đã thắng trận bet có mã ${targetMatch.id}.
+        Số tiền bạn được cộng thêm là ${addedAmount}`)
       });
 
-      return message.reply(`Đã đóng trận bet, trận này có ${winnersCount} bet thủ về bờ và ${totalCount - winnersCount} bet thủ ra đê.`)
+      return message.reply(`Đã đóng trận bet, trận này có ${winnersCount} bet thủ về bờ và ${totalCount - winnersCount} bet thủ ra đê.`);
     } else {
       return message.reply(`Đã đóng trận bet, trận này không có ai đặt cửa.`);
     }
