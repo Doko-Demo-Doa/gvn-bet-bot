@@ -95,13 +95,18 @@ export class BetCreate extends Command {
 
     const genMessage = <any>await message.say(response);
 
-    const scheduled = schedule.scheduleJob(time.toDate(), () => {
+    const scheduled = schedule.scheduleJob(time.toDate(), async () => {
 
-      message.say(stripIndents`
+      const newMsg = <any>await message.channel.send(stripIndents`
       @here Trận đấu đã bắt đầu:
 
       ${response}`);
-      genMessage.pin();
+
+      /* message.say(stripIndents`
+      @here Trận đấu đã bắt đầu:
+
+      ${response}`); */
+      newMsg.pin();
       scheduled.cancel();
     });
 
