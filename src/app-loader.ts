@@ -10,7 +10,8 @@ const PIN_THRESHOLD = 5
 
 const client = new Commando.Client({
   owner: process.env.OWNER,
-  commandPrefix: COMMAND_PREFIX
+  commandPrefix: COMMAND_PREFIX,
+  unknownCommandResponse: ''
 })
 
 // const client = new Discord.Client()
@@ -37,12 +38,20 @@ client
       reaction.message.unpin()
     }
   })
+  .on('commandError', (cmd, err) => {
+    console.log(err);
+    if (err instanceof client.FriendlyError) return;
+		console.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
+  })
+  .on('unknownCommand', (cmd, err) => {
+    return '';
+	})
 
 client.registry
   .registerGroups([
     ['bet', 'Bet commands']
   ])
-  .registerDefaults()
+  .registerDefaultTypes()
   .registerCommands(commandArray)
 
 // Start the client:

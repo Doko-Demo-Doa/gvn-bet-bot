@@ -1,11 +1,10 @@
 import { Command, CommandMessage } from 'discord.js-commando';
 import { Message } from 'discord.js';
 import moment from 'moment';
-import { DiscordUser } from '../entities/user';
-import { DiscordBet } from '../entities/bet';
 import { DiscordMatch } from '../entities/match';
 
 const stripIndents = require('common-tags').stripIndents;
+const schedule = require('node-schedule');
 
 const WAIT_TIME = 100
 
@@ -75,19 +74,34 @@ export class BetCreate extends Command {
     m.startTime = args['time'];
     m.gameName = args['g'];
 
-    if (moment().isAfter(moment(args.g, 'YYYY-MM-DD HH:mm'))) {
+    const time = moment(args.startTime, 'YYYY-MM-DD HH:mm')
+
+    if (moment().isAfter(time)) {
       return message.reply(`Vui lòng nhập ngày giờ hợp lệ.`);
     }
-    
+
     const mSaved = await m.save();
 
-    return message.reply(stripIndents`
-      Thông tin trận: ** ${args['t1']} vs ${args['t2']} ** (ID: ${mSaved.id})
-      Trận đấu diễn ra vào: ${args['time']}
-			**❯ Thông tin trận bet: ${args['g']}**
-      • Team 1: ${args['t1']} / Tỉ lệ: ${args['a1']}
-      • Team 2: ${args['t2']} / Tỉ lệ: ${args['a2']}
-      **❯ Chúc các bet thủ sớm ra đê!!! **
-		`);
+    const response = stripIndents`
+    Thông tin trận: ** ${args['t1']} vs ${args['t2']} ** (ID: ${mSaved.id})
+    Trận đấu diễn ra vào: ${args['time']}
+    **❯ Thông tin trận bet: ${args['g']}**
+    • Team 1: ${args['t1']} / Tỉ lệ: ${args['a1']}
+    • Team 2: ${args['t2']} / Tỉ lệ: ${args['a2']}
+    **❯ Chúc các bet thủ sớm ra đê!!! **
+  `;
+
+    const genMessage = <any>await message.say(response);
+    // console.log(genMessage.id);
+
+    schedule.scheduleJob(time.toDate(), () => {
+      message.say(`
+      Trận đấu đã bắt đầu:
+      ${response}
+      `);
+      genMessage.pin();
+    });
+
+    return genMessage;
   }
 }

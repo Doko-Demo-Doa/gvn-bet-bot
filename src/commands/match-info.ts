@@ -29,7 +29,7 @@ export class MatchInfo extends Command {
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
 
-    const resp = await DiscordMatch.findOne({ where: { id: args["-id"] } });
+    const resp = await DiscordMatch.findOne({ where: { id: args.id } });
     if (resp) {
       return message.reply(
         `
