@@ -71,7 +71,7 @@ export class MatchInfo extends Command {
       `
       );
     } else {
-      return message.reply(`Không có trận nào có ID là: ${resp.id}`);
+      return message.reply(`Không có trận nào có ID là: ${args.id}`);
     }
   }
 }
