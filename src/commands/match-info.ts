@@ -1,9 +1,13 @@
 import { Command, CommandMessage } from "discord.js-commando";
 import { Message } from "discord.js";
 import { DiscordMatch } from "../entities/match";
+import { DiscordBet } from "../entities/bet";
 
 const WAIT_TIME = 100;
 
+/**
+ * Info for a single match:
+ */
 export class MatchInfo extends Command {
   constructor(client) {
     super(client, {
@@ -28,17 +32,30 @@ export class MatchInfo extends Command {
     message: CommandMessage,
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
-
     const resp = await DiscordMatch.findOne({ where: { id: args.id } });
+    let joinedSession = await DiscordBet.findOne({
+      where: {
+        userId: message.author.id,
+        matchId: args.id
+      }
+    });
+
     if (resp) {
+      const lastLine = joinedSession
+        ? `Bạn cược ${
+            joinedSession.prediction === 1 ? resp.team1Name : resp.team2Name
+          } win - ${joinedSession.amount}`
+        : `Bạn chưa đặt cược trận này.`;
       return message.reply(
         `
       Trận đấu diễn ra vào: **${resp.startTime}**
-      **❯ Thông tin: **
-      • Team 1: ${resp.team1Name} / Tỉ lệ: ${resp.team1Rate}
-      • Team 2: ${resp.team2Name} / Tỉ lệ: ${resp.team2Rate}
+        **❯ Thông tin: ID của trận: ${resp.id}**
+        • ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})
+        • ${lastLine}
       ==================================================`
       );
+    } else {
+      return message.reply(`Không có trận nào có ID là: ${resp.id}`);
     }
   }
 }
