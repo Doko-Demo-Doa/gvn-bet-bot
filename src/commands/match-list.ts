@@ -36,30 +36,42 @@ export class MatchList extends Command {
       take: args["limit"],
       where: { result: null }
     });
-    const resultList = dataset.map(
-      async n => {
-        let joinedSession = await DiscordBet.findOne({
-          where: {
-            userId: message.author.id,
-            matchId: n.id
-          }
-        });
-        const lastLine = joinedSession
-        ? `Bạn cược ${
-            joinedSession.prediction === 1 ? n.team1Name : n.team2Name
-          } win - ${joinedSession.amount}`
-        : `Bạn chưa đặt cược trận này.`;
-        return stripIndents`
-        Trận đấu diễn ra vào: **${n.startTime}**
-        **❯ Thông tin: (ID của trận: ${n.id})**
-        • ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})
-        • ${lastLine}
-  
-        ==================================================`
-      });
 
-    const msgHeading = dataset.length > 0 ? stripIndents`** Danh sách các trận đang diễn ra: ** \n` : `Chưa có trận bet nào.`;
+    const results = [...dataset];
 
-    return message.reply(msgHeading.concat(resultList.join("\n")));
+    const queue = [];
+    results.forEach(async (n) => {
+      queue.push(DiscordBet.findOne({
+        where: {
+          userId: message.author.id,
+          matchId: n.id
+        }
+      }));
+    });
+
+    const resp = await Promise.all(queue);
+    const data = results.map((n, idx) => {
+      const joinedSession = resp[idx];
+      const lastLine = joinedSession
+      ? `Bạn cược ${
+          joinedSession.prediction === 1 ? n.team1Name : n.team2Name
+        } win - ${joinedSession.amount}`
+      : `Bạn chưa đặt cược trận này.`;
+
+      return stripIndents`
+      Trận đấu diễn ra vào: **${n.startTime}**
+      **❯ Thông tin: (ID của trận: ${n.id})**
+      • ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})
+      • ${lastLine}
+
+      ========================`
+    });      
+
+    const msgHeading = dataset.length > 0 ? stripIndents`
+    ** Danh sách các trận đang diễn ra: **`
+    : `Chưa có trận bet nào.`;
+
+    return message.reply(msgHeading.concat('\n\n').concat(data.join("\n")));
+    // return message.reply('Test');
   }
 }
