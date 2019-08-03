@@ -102,10 +102,6 @@ export class BetCreate extends Command {
 
       ${response}`);
 
-      /* message.say(stripIndents`
-      @here Trận đấu đã bắt đầu:
-
-      ${response}`); */
       newMsg.pin();
       scheduled.cancel();
     });
