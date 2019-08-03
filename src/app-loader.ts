@@ -1,4 +1,5 @@
 import { MessageReaction, User, Emoji, ReactionEmoji } from 'discord.js';
+import moment = require('moment');
 
 const Commando = require('discord.js-commando')
 const parser = require('discord-command-parser')

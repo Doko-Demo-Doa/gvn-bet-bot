@@ -51,7 +51,7 @@ export class BetCreate extends Command {
           label: 'Thời điểm bắt đầu',
           prompt: 'Chọn thời điểm bắt đầu của trận đấu. Sau khi trận đấu bắt đầu, không ai có thể đặt bet tiếp.',
           type: 'string',
-          validate: (value: moment.MomentInput) => moment(value, 'YYYY-MM-DD HH:mm').isValid(),
+          validate: (value: moment.MomentInput | any) => value.length === 16 && moment(value, 'YYYY-MM-DD HH:mm').isValid(),
           wait: WAIT_TIME + 50
         },
         {
