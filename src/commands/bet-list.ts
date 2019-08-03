@@ -39,6 +39,9 @@ export class BetList extends Command {
       take: args["limit"],
       order: {
         id: "ASC"
+      },
+      where: {
+        userId: message.author.id
       }
     });
     const resultList = dataset.map(
