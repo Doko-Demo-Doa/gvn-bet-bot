@@ -16,7 +16,7 @@ export class BetCreate extends Command {
       memberName: 'createbet',
       argsSingleQuotes: true,
       description: 'Tạo team trong trận bet. Chỉ admin mới được tạo',
-      examples: ["createbet -t1 'Vietnam' -a1 0.5 -t2 'Thailand' -a2 0.4 -time \"2019-09-12 20:14\""],
+      examples: ["createbet 'Vietnam' 0.5 'Thailand' 0.4 \'2019-09-12 20:14\' Dota"],
       args: [
         {
           key: 't1',
@@ -94,12 +94,14 @@ export class BetCreate extends Command {
     const genMessage = <any>await message.say(response);
     // console.log(genMessage.id);
 
-    schedule.scheduleJob(time.toDate(), () => {
-      message.say(`
-      Trận đấu đã bắt đầu:
+    const scheduled = schedule.scheduleJob(time.toDate(), () => {
+      message.say(stripIndents`
+      @here Trận đấu đã bắt đầu:
+
       ${response}
       `);
       genMessage.pin();
+      scheduled.cancel();
     });
 
     return genMessage;

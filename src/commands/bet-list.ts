@@ -38,7 +38,7 @@ export class BetList extends Command {
     const dataset = await DiscordBet.find({
       take: args["limit"],
       order: {
-        id: 'ASC'
+        id: "ASC"
       }
     });
     const resultList = dataset.map(

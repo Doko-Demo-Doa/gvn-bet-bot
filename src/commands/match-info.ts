@@ -49,10 +49,10 @@ export class MatchInfo extends Command {
       return message.reply(
         `
       Trận đấu diễn ra vào: **${resp.startTime}**
-        **❯ Thông tin: ID của trận: ${resp.id}**
+        **❯ Thông tin: (ID của trận: ${resp.id})**
         • ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})
         • ${lastLine}
-      ==================================================`
+      `
       );
     } else {
       return message.reply(`Không có trận nào có ID là: ${resp.id}`);
