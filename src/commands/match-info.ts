@@ -40,6 +40,20 @@ export class MatchInfo extends Command {
       }
     });
 
+    const team1BetCount = DiscordBet.count({
+      where: {
+        matchId: args.id,
+        prediction: 1
+      }
+    });
+
+    const team2BetCount = DiscordBet.count({
+      where: {
+        matchId: args.id,
+        prediction: 2
+      }
+    });
+
     if (resp) {
       const lastLine = joinedSession
         ? `Bạn cược ${
@@ -52,6 +66,8 @@ export class MatchInfo extends Command {
         **❯ Thông tin: (ID của trận: ${resp.id})**
         • ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})
         • ${lastLine}
+
+        • (${team1BetCount} người đặt cửa ${resp.team1Name}) VS (${team2BetCount} người đặt cửa ${resp.team2Name})
       `
       );
     } else {

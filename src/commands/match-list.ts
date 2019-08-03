@@ -1,6 +1,7 @@
 import { Command, CommandMessage } from "discord.js-commando";
 import { Message } from "discord.js";
 import { DiscordMatch } from "../entities/match";
+import { DiscordBet } from "../entities/bet";
 
 const stripIndents = require("common-tags").stripIndents;
 
@@ -36,15 +37,26 @@ export class MatchList extends Command {
       where: { result: null }
     });
     const resultList = dataset.map(
-      n => `
-      Trận đấu diễn ra vào: **${n.startTime}**
-      **❯ Thông tin: **
-      • ID của trận: ${n.id}
-      • Team 1: ${n.team1Name} / Tỉ lệ: ${n.team1Rate}
-      • Team 2: ${n.team2Name} / Tỉ lệ: ${n.team2Rate}
-
-      ==================================================`
-    );
+      async n => {
+        let joinedSession = await DiscordBet.findOne({
+          where: {
+            userId: message.author.id,
+            matchId: n.id
+          }
+        });
+        const lastLine = joinedSession
+        ? `Bạn cược ${
+            joinedSession.prediction === 1 ? n.team1Name : n.team2Name
+          } win - ${joinedSession.amount}`
+        : `Bạn chưa đặt cược trận này.`;
+        return stripIndents`
+        Trận đấu diễn ra vào: **${n.startTime}**
+        **❯ Thông tin: (ID của trận: ${n.id})**
+        • ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})
+        • ${lastLine}
+  
+        ==================================================`
+      });
 
     const msgHeading = stripIndents`** Danh sách các trận đang diễn ra: ** \n`;
 
