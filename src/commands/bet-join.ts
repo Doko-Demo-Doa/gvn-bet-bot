@@ -28,7 +28,7 @@ export class BetJoin extends Command {
         {
           key: "team",
           label: "Team đặt cược",
-          prompt: "Nhập team mà bạn muốn đặt cược.",
+          prompt: "Nhập team mà bạn muốn đặt cược. Để biết tên team vui lòng dùng lệnh `matchinfo`",
           min: 1,
           max: 2,
           type: "integer"
