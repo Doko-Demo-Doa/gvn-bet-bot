@@ -1,5 +1,5 @@
 import { Command, CommandMessage } from "discord.js-commando";
-import { Message } from "discord.js";
+import { Message, User } from "discord.js";
 import moment from "moment";
 import { DiscordUser } from "../entities/user";
 import { DiscordBet } from "../entities/bet";
@@ -42,6 +42,12 @@ export class BetJoin extends Command {
         }
       ]
     });
+  }
+  
+  usage (argString?: string, prefix?: string, user?: User): any {
+    console.log(argString);
+    console.log(prefix);
+    console.log(user);
   }
 
   async run(
