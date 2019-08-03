@@ -58,7 +58,7 @@ export class MatchList extends Command {
         ==================================================`
       });
 
-    const msgHeading = stripIndents`** Danh sách các trận đang diễn ra: ** \n`;
+    const msgHeading = dataset.length > 0 ? stripIndents`** Danh sách các trận đang diễn ra: ** \n` : `Chưa có trận bet nào.`;
 
     return message.reply(msgHeading.concat(resultList.join("\n")));
   }
