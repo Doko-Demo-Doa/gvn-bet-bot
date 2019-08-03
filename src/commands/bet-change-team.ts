@@ -70,8 +70,9 @@ export class BetChangeTeam extends Command {
         Thông tin trận: ** ${targetMatch.team1Name} vs ${targetMatch.team2Name} ** (ID: ${targetMatch.id})
         Trận đấu diễn ra vào: ${targetMatch.startTime}
         **❯ Thông tin trận bet: ${targetMatch.gameName}**
-        • Team 1: ${targetMatch.team1Name} / Tỉ lệ: ${targetMatch.team1Rate}
-        • Team 2: ${targetMatch.team2Name} / Tỉ lệ: ${targetMatch.team2Rate}
+        
+        • ${targetMatch.team1Name} (x${targetMatch.team1Rate}) VS ${targetMatch.team2Name} (x${targetMatch.team2Rate})
+
         **❯ Bạn đặt lại cho cửa team: ${joinedSession.prediction} **
       `);
       } else {
