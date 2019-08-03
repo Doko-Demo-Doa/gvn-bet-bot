@@ -24,14 +24,6 @@ export class BetChangeTeam extends Command {
           label: "ID trận đấu",
           prompt: "Nhập ID của trận đấu muốn đổi",
           type: "integer"
-        },
-        {
-          key: "team",
-          label: "Team đặt cược",
-          prompt: "Nhập team mà bạn muốn đặt đổi.",
-          min: 1,
-          max: 2,
-          type: "integer"
         }
       ]
     });
@@ -69,7 +61,7 @@ export class BetChangeTeam extends Command {
 
       if (joinedSession) {
         // Editing a joined session.
-        joinedSession.prediction = args.team;
+        joinedSession.prediction = (joinedSession.prediction === 1) ? 2 : 1;
         joinedSession.dateAdded = moment().format("YYYY-MM-DD HH:mm");
         joinedSession.save();
 
@@ -80,7 +72,7 @@ export class BetChangeTeam extends Command {
         **❯ Thông tin trận bet: ${targetMatch.gameName}**
         • Team 1: ${targetMatch.team1Name} / Tỉ lệ: ${targetMatch.team1Rate}
         • Team 2: ${targetMatch.team2Name} / Tỉ lệ: ${targetMatch.team2Rate}
-        **❯ Bạn đặt lại cho cửa team: ${args.team} **
+        **❯ Bạn đặt lại cho cửa team: ${joinedSession.prediction} **
       `);
       } else {
         return message.reply(`Bạn chưa join kèo này, dùng lệnh \`.joinbet\` để tham gia`)
