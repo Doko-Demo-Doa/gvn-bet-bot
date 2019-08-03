@@ -1,10 +1,12 @@
 import { Command, CommandMessage } from 'discord.js-commando';
 import { Message } from 'discord.js';
-import moment from 'moment';
 import { DiscordMatch } from '../entities/match';
 
 const stripIndents = require('common-tags').stripIndents;
 const schedule = require('node-schedule');
+
+const moment = require('moment-timezone');
+moment.tz.setDefault("Asia/Ho_Chi_Minh");
 
 const WAIT_TIME = 100
 
@@ -51,7 +53,7 @@ export class BetCreate extends Command {
           label: 'Thời điểm bắt đầu',
           prompt: 'Chọn thời điểm bắt đầu của trận đấu. Sau khi trận đấu bắt đầu, không ai có thể đặt bet tiếp.',
           type: 'string',
-          validate: (value: moment.MomentInput | any) => value.length === 16 && moment(value, 'YYYY-MM-DD HH:mm').isValid(),
+          validate: (value: string) => value.length === 16 && moment(value, 'YYYY-MM-DD HH:mm').isValid(),
           wait: WAIT_TIME + 50
         },
         {
@@ -74,7 +76,7 @@ export class BetCreate extends Command {
     m.startTime = args['time'];
     m.gameName = args['g'];
 
-    const time = moment(args.startTime, 'YYYY-MM-DD HH:mm')
+    const time = moment(args.time, 'YYYY-MM-DD HH:mm')
 
     if (moment().isAfter(time)) {
       return message.reply(`Vui lòng nhập ngày giờ hợp lệ.`);
@@ -92,14 +94,13 @@ export class BetCreate extends Command {
   `;
 
     const genMessage = <any>await message.say(response);
-    // console.log(genMessage.id);
 
     const scheduled = schedule.scheduleJob(time.toDate(), () => {
+
       message.say(stripIndents`
       @here Trận đấu đã bắt đầu:
 
-      ${response}
-      `);
+      ${response}`);
       genMessage.pin();
       scheduled.cancel();
     });
