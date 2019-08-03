@@ -5,6 +5,7 @@ import { BetJoin } from './bet-join';
 import { BetEnd } from './bet-end';
 import { CheckMoney } from './check-money';
 import { BetChangeTeam } from './bet-change-team';
+import { BetList } from './bet-list';
 
 module.exports = [
   BetCreate,
@@ -13,5 +14,6 @@ module.exports = [
   BetJoin,
   BetEnd,
   CheckMoney,
-  BetChangeTeam
+  BetChangeTeam,
+  BetList
 ]

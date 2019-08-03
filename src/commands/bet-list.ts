@@ -54,7 +54,7 @@ export class BetList extends Command {
       ==================================================`
     );
 
-    const msgHeading = stripIndents`** Danh sách các trận đang diễn ra: ** \n`;
+    const msgHeading = dataset.length > 0 ? stripIndents`** Danh sách các trận bạn tham gia: ** \n` : `Bạn chưa tham gia trận nào.`;
 
     return message.reply(msgHeading.concat(resultList.join("\n")));
   }
