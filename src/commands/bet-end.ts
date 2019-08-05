@@ -20,7 +20,6 @@ export class BetEnd extends Command {
       description: 'Kết thúc trận bet và trả tiền cho tất cả những người thắng cuộc.',
       examples: ["endbet 12 1"],
       // @ts-ignore
-      clientPermissions: ['MANAGE_CHANNELS', 'ADMINISTRATOR'],
 			userPermissions: ['ADMINISTRATOR'],
       args: [
         {
