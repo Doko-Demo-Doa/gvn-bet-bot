@@ -19,6 +19,9 @@ export class BetCreate extends Command {
       argsSingleQuotes: true,
       description: 'Tạo team trong trận bet. Chỉ admin mới được tạo',
       examples: ["createbet 'Vietnam' 0.5 'Thailand' 0.4 \'2019-09-12 20:14\' Dota"],
+      // @ts-ignore
+      clientPermissions: ['MANAGE_CHANNELS', 'ADMINISTRATOR'],
+			userPermissions: ['ADMINISTRATOR'],
       args: [
         {
           key: 't1',
@@ -66,6 +69,8 @@ export class BetCreate extends Command {
       ]
     });
   }
+
+  hasPermission
 
   async run(message: CommandMessage, args: object | any | string | string[]): Promise<Message | Message[]> {
     const m = new DiscordMatch();
