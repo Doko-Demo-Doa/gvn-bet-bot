@@ -40,14 +40,14 @@ export class MatchInfo extends Command {
       }
     });
 
-    const team1BetCount = DiscordBet.count({
+    const team1BetCount = await DiscordBet.count({
       where: {
         matchId: args.id,
         prediction: 1
       }
     });
 
-    const team2BetCount = DiscordBet.count({
+    const team2BetCount = await DiscordBet.count({
       where: {
         matchId: args.id,
         prediction: 2
