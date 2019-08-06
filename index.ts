@@ -6,7 +6,7 @@ import { createConnection } from "typeorm";
 
 createConnection()
   .then(async connection => {
-    await connection.query('PRAGMA foreign_keys=OFF');
-    await connection.synchronize();
+    // await connection.query('PRAGMA foreign_keys=OFF');
+    // await connection.synchronize();
   })
   .catch(error => console.log(error));

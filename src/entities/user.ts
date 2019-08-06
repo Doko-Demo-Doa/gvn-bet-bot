@@ -32,6 +32,6 @@ export class DiscordUser extends BaseEntity {
   @Column({ name: 'IsClubAdmin'})
   isClubAdmin: number;
 
-  @Column({ name: 'CurrencyAmount'})
+  @Column({ name: 'CurrencyAmount', type: 'numeric' })
   currencyAmount: number;
 }

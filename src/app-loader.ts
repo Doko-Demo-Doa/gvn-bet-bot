@@ -1,5 +1,5 @@
 import { MessageReaction, User, Emoji, ReactionEmoji } from 'discord.js';
-import moment = require('moment');
+//   "database": "../NadekoBot/src/NadekoBot/bin/Release/netcoreapp2.1/data/NadekoBot.db",
 
 const Commando = require('discord.js-commando')
 const parser = require('discord-command-parser')
