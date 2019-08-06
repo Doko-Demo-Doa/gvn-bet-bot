@@ -16,7 +16,6 @@ export class MatchInfo extends Command {
       memberName: "matchinfo",
       description: "Thông tin trận đấu, kèm kèo bet của bạn (nếu có).",
       examples: ["matchinfo 10"],
-      defaultHandling: false,
       args: [
         {
           key: "id",
