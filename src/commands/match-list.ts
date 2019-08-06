@@ -15,6 +15,8 @@ export class MatchList extends Command {
       memberName: "listbet",
       description: "Liệt kê các trận bet đang diễn ra.",
       examples: ["listbet -limit 10"],
+      argsPromptLimit: 0,
+      defaultHandling: false,
       args: [
         {
           key: "limit",

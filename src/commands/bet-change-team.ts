@@ -15,6 +15,8 @@ export class BetChangeTeam extends Command {
       name: "changeteam",
       group: "bet",
       memberName: "changeteam",
+      argsPromptLimit: 0,
+      defaultHandling: false,
       description:
         "Tham gia vào một trận bet. Phải có đủ tiền mới tham gia được.",
       examples: ["changeteam 23 1"],

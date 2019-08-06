@@ -17,6 +17,8 @@ export class BetJoin extends Command {
       memberName: "joinbet",
       description:
         "Tham gia vào một trận bet. Phải có đủ tiền mới tham gia được.",
+      argsPromptLimit: 0,
+      defaultHandling: false,
       examples: ["joinbet 23 1 1200"],
       args: [
         {
