@@ -38,6 +38,7 @@
     "reflect-metadata": "^0.1.13",
     "require-all": "^3.0.0",
     "sqlite3": "^4.0.9",
+    "tsconfig-paths": "^3.8.0",
     "typeorm": "^0.2.18",
     "uws": "^100.0.1"
   },
