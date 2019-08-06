@@ -17,6 +17,8 @@ export class SetMoney extends Command {
       memberName: "setmoney",
       description: "Set tiền cho người gõ. Lệnh này dùng để test.",
       examples: ["setmoney 10"],
+      // @ts-ignore
+      userPermissions: ['ADMINISTRATOR'],
       args: [
         {
           key: "money",
