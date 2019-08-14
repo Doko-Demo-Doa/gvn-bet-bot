@@ -64,9 +64,12 @@ export class MatchInfo extends Command {
         : `Bạn chưa đặt cược trận này.`;
       return message.reply('\n' + stripIndents`
 
-      Trận đấu diễn ra vào: **${resp.startTime}**
-      **❯ Thông tin: (ID của trận: ${resp.id})**
+      Time: **${resp.startTime}**
+      Match ID: **${resp.id}**
+      Game: **${resp.gameName}**
+
       \`\`\`cs
+
       ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})\`\`\`
       • ${lastLine}
       • (${team1BetCount} join **${resp.team1Name}**) VS (${team2BetCount} join **${resp.team2Name}**)
