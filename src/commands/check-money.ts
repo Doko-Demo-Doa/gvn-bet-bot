@@ -21,6 +21,12 @@ export class CheckMoney extends Command {
       userId: message.author.id
     }});
 
-    return message.reply(`Bạn đang có ${user.currencyAmount}`);
+    return message.say(`
+    Time: 2019-08-13 03:00
+    Match ID: 5
+    Game: Rainbow6
+
+    >>> Test
+    `);
   }
 }

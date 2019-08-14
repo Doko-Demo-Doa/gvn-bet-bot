@@ -103,7 +103,7 @@ export class BetCreate extends Command {
     const scheduled = schedule.scheduleJob(time.toDate(), async () => {
 
       const newMsg = <any>await message.channel.send(stripIndents`
-      @here Trận đấu đã bắt đầu:
+      Trận đấu đã bắt đầu:
 
       ${response}`);
 

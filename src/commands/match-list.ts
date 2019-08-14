@@ -59,19 +59,24 @@ export class MatchList extends Command {
       : `Bạn chưa đặt cược trận này.`;
 
       return stripIndents`
-      Trận đấu diễn ra vào: **${n.startTime}**
-      **❯ Thông tin: (ID của trận: ${n.id})**
-      • ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})
+
+      Time: **${n.startTime}**
+      Match ID: ${n.id}
+      Game: ${n.gameName}
+
+      \```sh
+      ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})
+      \```
+
       • ${lastLine}
 
       ========================`
     });      
 
     const msgHeading = dataset.length > 0 ? stripIndents`
-    ** Danh sách các trận đang diễn ra: **`
+    ** Danh sách các trận hiện có: **`
     : `Chưa có trận bet nào.`;
 
     return message.reply(msgHeading.concat('\n\n').concat(data.join("\n")));
-    // return message.reply('Test');
   }
 }
