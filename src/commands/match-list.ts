@@ -32,6 +32,7 @@ export class MatchList extends Command {
     message: CommandMessage,
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
+    // Get match list:
     const dataset = await DiscordMatch.find({
       take: args["limit"],
       where: { result: null }

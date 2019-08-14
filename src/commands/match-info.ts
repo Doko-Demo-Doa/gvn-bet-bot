@@ -3,6 +3,8 @@ import { Message } from "discord.js";
 import { DiscordMatch } from "../entities/match";
 import { DiscordBet } from "../entities/bet";
 
+const stripIndents = require("common-tags").stripIndents;
+
 const WAIT_TIME = 100;
 
 /**
@@ -56,18 +58,18 @@ export class MatchInfo extends Command {
 
     if (resp) {
       const lastLine = joinedSession
-        ? `Bạn cược ${
+        ? stripIndents`Bạn cược ${
             joinedSession.prediction === 1 ? resp.team1Name : resp.team2Name
           } win - ${joinedSession.amount}`
         : `Bạn chưa đặt cược trận này.`;
       return message.reply(
-        `
+        stripIndents`
       Trận đấu diễn ra vào: **${resp.startTime}**
         **❯ Thông tin: (ID của trận: ${resp.id})**
-        • ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})
+        \`\`\`cs
+        ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})\`\`\`
         • ${lastLine}
-
-        • (${team1BetCount} người đặt cửa ${resp.team1Name}) VS (${team2BetCount} người đặt cửa ${resp.team2Name})
+        • (${team1BetCount} người đặt cửa **${resp.team1Name}**) VS (${team2BetCount} người đặt cửa **${resp.team2Name}**)
       `
       );
     } else {
