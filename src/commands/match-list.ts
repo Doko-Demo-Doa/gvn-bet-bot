@@ -53,24 +53,18 @@ export class MatchList extends Command {
     const data = results.map((n, idx) => {
       const joinedSession = resp[idx];
       const lastLine = joinedSession
-      ? `Bạn cược ${
-          joinedSession.prediction === 1 ? n.team1Name : n.team2Name
-        } win - ${joinedSession.amount}`
-      : `Bạn chưa đặt cược trận này.`;
+      ? `<@${message.author.id}> cược ${joinedSession.prediction === 1 ? n.team1Name : n.team2Name} win - ${joinedSession.amount}`
+      : `<@${message.author.id}> chưa đặt cược trận này.`;
 
-      return `
+      return stripIndents`
       Time: **${n.startTime}**
-      Match ID: ${n.id}
-      Game: ${n.gameName}
-
-      \`\`\`sh
-      ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})
-      \`\`\`
-
+      Match ID: **${n.id}**
+      Game: **${n.gameName}**
+      \`\`\`cs
+      ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})\`\`\`
       • ${lastLine}
-
       ========================`
-    });      
+    });
 
     const msgHeading = dataset.length > 0 ? stripIndents`
     ** Danh sách các trận hiện có: **`
