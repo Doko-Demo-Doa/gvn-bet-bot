@@ -62,14 +62,14 @@ export class MatchInfo extends Command {
             joinedSession.prediction === 1 ? resp.team1Name : resp.team2Name
           } win - ${joinedSession.amount}`
         : `Bạn chưa đặt cược trận này.`;
-      return message.reply(
-        stripIndents`
+      return message.reply('\n' + stripIndents`
+
       Trận đấu diễn ra vào: **${resp.startTime}**
-        **❯ Thông tin: (ID của trận: ${resp.id})**
-        \`\`\`cs
-        ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})\`\`\`
-        • ${lastLine}
-        • (${team1BetCount} người đặt cửa **${resp.team1Name}**) VS (${team2BetCount} người đặt cửa **${resp.team2Name}**)
+      **❯ Thông tin: (ID của trận: ${resp.id})**
+      \`\`\`cs
+      ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})\`\`\`
+      • ${lastLine}
+      • (${team1BetCount} người đặt cửa **${resp.team1Name}**) VS (${team2BetCount} người đặt cửa **${resp.team2Name}**)
       `
       );
     } else {
