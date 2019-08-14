@@ -58,15 +58,14 @@ export class MatchList extends Command {
         } win - ${joinedSession.amount}`
       : `Bạn chưa đặt cược trận này.`;
 
-      return stripIndents`
-
+      return `
       Time: **${n.startTime}**
       Match ID: ${n.id}
       Game: ${n.gameName}
 
-      \```sh
+      \`\`\`sh
       ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})
-      \```
+      \`\`\`
 
       • ${lastLine}
 
