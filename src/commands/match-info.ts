@@ -69,7 +69,7 @@ export class MatchInfo extends Command {
       \`\`\`cs
       ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})\`\`\`
       • ${lastLine}
-      • (${team1BetCount} người đặt cửa **${resp.team1Name}**) VS (${team2BetCount} người đặt cửa **${resp.team2Name}**)
+      • (${team1BetCount} join **${resp.team1Name}**) VS (${team2BetCount} join **${resp.team2Name}**)
       `
       );
     } else {
