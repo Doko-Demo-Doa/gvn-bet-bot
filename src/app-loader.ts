@@ -36,7 +36,6 @@ client
   .on('messageReactionRemove', (reaction: MessageReaction, user: User) => {
     const pinCount = reaction.message.reactions.filter(n => n.emoji.name === '📌').size
     if (pinCount < PIN_THRESHOLD) {
-      reaction.message.reply('Message unpinned')
       reaction.message.unpin()
     }
   })

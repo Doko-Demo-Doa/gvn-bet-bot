@@ -1,5 +1,5 @@
 import { Command, CommandMessage } from "discord.js-commando";
-import { Message } from "discord.js";
+import { Message, RichEmbed } from "discord.js";
 import { DiscordMatch } from "../entities/match";
 import { DiscordBet } from "../entities/bet";
 
@@ -57,26 +57,30 @@ export class MatchInfo extends Command {
     });
 
     if (resp) {
-      const lastLine = joinedSession
-        ? stripIndents`Bạn cược ${
-            joinedSession.prediction === 1 ? resp.team1Name : resp.team2Name
-          } win - ${joinedSession.amount}`
-        : `Bạn chưa đặt cược trận này.`;
-      return message.reply('\n' + stripIndents`
+      const embedData = new RichEmbed()
+        .setColor("#77B019")
+        .setTitle("Thông tin trận:")
+        .addBlankField()
+        .addField("Diễn ra ngày", resp.startTime, true)
+        .addField("Match ID", resp.id, true)
+        .addField("Game", resp.gameName, true)
+        .addBlankField()
+        .addField(resp.team1Name, `Tỉ lệ: ${resp.team1Rate} \n ${team1BetCount} join`, true)
+        .addField("VS", "-", true)
+        .addField(resp.team2Name, `Tỉ lệ: ${resp.team2Rate} \n ${team2BetCount} join`, true)
+        .addBlankField();
 
-      Time: **${resp.startTime}**
-      Match ID: **${resp.id}**
-      Game: **${resp.gameName}**
+      if (joinedSession) {
+        embedData.setFooter(`Bạn cược ${
+          joinedSession.prediction === 1 ? resp.team1Name : resp.team2Name
+        } win - ${joinedSession.amount} 💵`);
+      } else {
+        embedData.setFooter(`Bạn chưa đặt cược trận này.`);
+      }
 
-      \`\`\`cs
-
-      ${resp.team1Name} (x${resp.team1Rate}) VS ${resp.team2Name} (x${resp.team2Rate})\`\`\`
-      • ${lastLine}
-      • (${team1BetCount} join **${resp.team1Name}**) VS (${team2BetCount} join **${resp.team2Name}**)
-      `
-      );
+      return message.channel.send(embedData);
     } else {
-      return message.reply(`Không có trận nào có ID là: ${args.id}`);
+      return message.channel.send(`Không có trận nào có ID là: ${args.id}`);
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Command, CommandMessage } from "discord.js-commando";
-import { Message } from "discord.js";
+import { Message, RichEmbed } from "discord.js";
 import { DiscordUser } from "../entities/user";
 
 export class CheckMoney extends Command {
@@ -17,16 +17,24 @@ export class CheckMoney extends Command {
     message: CommandMessage,
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
-    const user = await DiscordUser.findOne({ where: {
-      userId: message.author.id
-    }});
+    const user = await DiscordUser.findOne({
+      where: {
+        userId: message.author.id
+      }
+    });
 
-    return message.say(`
-    Time: 2019-08-13 03:00
-    Match ID: 5
-    Game: Rainbow6
+    const embedData = new RichEmbed()
+      .setColor("#77B019")
+      .setTitle("Thông tin trận:")
+      .addBlankField()
+      .addField("Diễn ra ngày", "2019-08-21", true)
+      .addField("Match ID", "1234", true)
+      .addField("Game", "Dota 2", true)
+      .addBlankField()
+      .addField("Pow", "Tỉ lệ: 0.4 \n 0 join", true)
+      .addField("VS", "-", true)
+      .addField("Intel", "Tỉ lệ: 0.3 \n 0 join", true)
 
-    >>> Test
-    `);
+    return message.channel.send(embedData);
   }
 }
