@@ -69,11 +69,11 @@ export class MatchInfo extends Command {
         .addBlankField();
 
       if (joinedSession) {
-        embedData.setFooter(`Bạn cược ${
+        embedData.addField('Tình trạng bet:',  `Bạn cược ${
           joinedSession.prediction === 1 ? resp.team1Name : resp.team2Name
         } win - ${joinedSession.amount} 💵`);
       } else {
-        embedData.setFooter(`Bạn chưa đặt cược trận này.`);
+        embedData.addField('Tình trạng bet:', `Bạn chưa đặt cược trận này. 💵`);
       }
 
       return message.channel.send(embedData);
