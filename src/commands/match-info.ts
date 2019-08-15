@@ -60,10 +60,9 @@ export class MatchInfo extends Command {
       const embedData = new RichEmbed()
         .setColor("#77B019")
         .setTitle("Thông tin trận:")
-        .addField("Diễn ra ngày", resp.startTime)
-        .addField("Match ID", resp.id)
-        .addField("Game", resp.gameName)
-        .addBlankField()
+        .addField("Diễn ra ngày", resp.startTime, true)
+        .addField("Match ID", resp.id, true)
+        .addField("Game", resp.gameName, true)
         .addField(resp.team1Name, `Tỉ lệ: ${resp.team1Rate} \n ${team1BetCount} join`, true)
         .addField("VS", "-", true)
         .addField(resp.team2Name, `Tỉ lệ: ${resp.team2Rate} \n ${team2BetCount} join`, true)
@@ -72,7 +71,7 @@ export class MatchInfo extends Command {
       if (joinedSession) {
         embedData.setFooter(`Bạn cược ${
           joinedSession.prediction === 1 ? resp.team1Name : resp.team2Name
-        } win - ${joinedSession.amount} :dollar:`);
+        } win - ${joinedSession.amount} 💵`);
       } else {
         embedData.setFooter(`Bạn chưa đặt cược trận này.`);
       }
