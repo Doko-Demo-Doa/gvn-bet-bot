@@ -106,8 +106,9 @@ export class BetJoin extends Command {
 
         const ed = new RichEmbed()
           .setColor('#FB8E02')
-          .setTitle(`<@${message.author.id}> Bạn vừa đặt cửa cho trận sau:`)
+          .setTitle(`${message.author.username}, Bạn vừa đặt cửa cho trận sau:`)
           .setDescription('Vui lòng chú ý thời gian trận đấu bắt đầu')
+          .addBlankField()
           .addField("Diễn ra ngày", targetMatch.startTime, true)
           .addField("Match ID", targetMatch.id, true)
           .addField("Game", targetMatch.gameName, true)
@@ -115,8 +116,8 @@ export class BetJoin extends Command {
           .addField("VS", ".", true)
           .addField(targetMatch.team2Name, `Tỉ lệ: ${targetMatch.team2Rate}`, true)
           .addBlankField()
-          .addField('Bạn đã cược:', newBet.prediction === 1 ? targetMatch.team1Name : targetMatch.team2Name + ' win, số tiền cược: ' + `${newBet.amount} 💵`)
-          .addField('Số vốn hiện có:', `${joinedSession.amount} 💵`);
+          .addField('Bạn đã cược:', (newBet.prediction === 1 ? targetMatch.team1Name : targetMatch.team2Name) + ' win, số tiền cược: ' + `${newBet.amount} 💵`)
+          .addField('Số vốn hiện có:', `${targetUser.currencyAmount} 💵`);
 
         return message.channel.send(ed);
       }
