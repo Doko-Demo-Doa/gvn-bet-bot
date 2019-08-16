@@ -1,9 +1,7 @@
 import { Command, CommandMessage } from "discord.js-commando";
-import { Message } from "discord.js";
+import { Message, RichEmbed } from "discord.js";
 import { DiscordMatch } from "../entities/match";
 import { DiscordBet } from "../entities/bet";
-
-const stripIndents = require("common-tags").stripIndents;
 
 const WAIT_TIME = 100;
 
@@ -18,7 +16,7 @@ export class MatchList extends Command {
       args: [
         {
           key: "limit",
-          default: 5,
+          default: 4,
           label: "Giới hạn số lượng",
           prompt: "Nhập số lượng các trận bet đang diễn ra và có thể đặt cược.",
           type: "integer",
@@ -41,36 +39,45 @@ export class MatchList extends Command {
     const results = [...dataset];
 
     const queue = [];
-    results.forEach(async (n) => {
-      queue.push(DiscordBet.findOne({
-        where: {
-          userId: message.author.id,
-          matchId: n.id
-        }
-      }));
+    results.forEach(async n => {
+      queue.push(
+        DiscordBet.findOne({
+          where: {
+            userId: message.author.id,
+            matchId: n.id
+          }
+        })
+      );
     });
 
     const resp = await Promise.all(queue);
-    const data = results.map((n, idx) => {
-      const joinedSession = resp[idx];
-      const lastLine = joinedSession
-      ? `<@${message.author.id}> cược ${joinedSession.prediction === 1 ? n.team1Name : n.team2Name} win - ${joinedSession.amount}`
-      : `<@${message.author.id}> chưa đặt cược trận này.`;
 
-      return stripIndents`
-      Time: **${n.startTime}**
-      Match ID: **${n.id}**
-      Game: **${n.gameName}**
-      \`\`\`cs
-      ${n.team1Name} (x${n.team1Rate}) VS ${n.team2Name} (x${n.team2Rate})\`\`\`
-      • ${lastLine}
-      ========================`
+    let ed = new RichEmbed()
+      .setColor("#E88094")
+      .setTitle("Danh sách các trận bet:")
+      .setDescription(dataset.length > 0 ? `Để liệt kê thêm kết quả, vui lòng thêm số sau lệnh .listbet` : `Chưa có trận bet nào.`)
+      .addBlankField();
+
+    results.forEach((n, idx) => {
+      ed.addField("Diễn ra ngày", n.startTime, true);
+      ed.addField("Match ID", n.id, true);
+      ed.addField("Game", n.gameName, true);
+      ed.addField(n.team1Name, `Tỉ lệ: ${n.team1Rate}`, true);
+      ed.addField("VS", ".", true);
+      ed.addField(n.team2Name, `Tỉ lệ: ${n.team2Rate}`, true);
+
+      const joinedSession = resp[idx];
+      ed.addField(
+        "Tình trạng bet:",
+        joinedSession
+          ? `<@${message.author.id}> cược ${
+              joinedSession.prediction === 1 ? n.team1Name : n.team2Name
+            } win - ${joinedSession.amount}`
+          : `<@${message.author.id}> chưa đặt cược trận này.`
+      );
+      ed.addBlankField();
     });
 
-    const msgHeading = dataset.length > 0 ? stripIndents`
-    ** Danh sách các trận hiện có: **`
-    : `Chưa có trận bet nào.`;
-
-    return message.reply(msgHeading.concat('\n\n').concat(data.join("\n")));
+    return message.channel.send(ed);
   }
 }
