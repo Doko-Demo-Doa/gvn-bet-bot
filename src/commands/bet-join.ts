@@ -1,13 +1,9 @@
 import { Command, CommandMessage } from "discord.js-commando";
-import { Message, User } from "discord.js";
+import { Message, User, RichEmbed } from "discord.js";
 import moment from "moment";
 import { DiscordUser } from "../entities/user";
 import { DiscordBet } from "../entities/bet";
 import { DiscordMatch } from "../entities/match";
-
-const stripIndents = require("common-tags").stripIndents;
-
-const WAIT_TIME = 100;
 
 export class BetJoin extends Command {
   constructor(client) {
@@ -64,7 +60,7 @@ export class BetJoin extends Command {
       }
 
       if (moment().isAfter(moment(targetMatch.startTime, 'YYYY-MM-DD HH:mm'))) {
-        return message.reply(`>>> Trận đấu đã bắt đầu, không thể bet hoặc đổi kèo.`);
+        return message.reply(`Trận đấu đã bắt đầu, không thể bet hoặc đổi kèo.`);
       }
 
       let joinedSession = await DiscordBet.findOne({
@@ -108,18 +104,21 @@ export class BetJoin extends Command {
 
         await targetUser.save();
 
-        return message.reply(stripIndents`
-        Bạn vừa đặt cửa cho trận sau:
-        Thông tin trận: ** ${targetMatch.team1Name} vs ${targetMatch.team2Name} ** (ID: ${targetMatch.id})
-        Trận đấu diễn ra vào: ${targetMatch.startTime}
-  
-        **❯ Thông tin trận bet: ${targetMatch.gameName}**
-        • ${targetMatch.team1Name} (x${targetMatch.team1Rate}) VS ${targetMatch.team2Name} (x${targetMatch.team2Rate})
-  
-        Số vốn hiện có: ${targetUser.currencyAmount}
-  
-        Chúc bạn có một bờ đê ấm áp để ra nằm!!!
-      `);
+        const ed = new RichEmbed()
+          .setColor('#FB8E02')
+          .setTitle(`<@${message.author.id}> Bạn vừa đặt cửa cho trận sau:`)
+          .setDescription('Vui lòng chú ý thời gian trận đấu bắt đầu')
+          .addField("Diễn ra ngày", targetMatch.startTime, true)
+          .addField("Match ID", targetMatch.id, true)
+          .addField("Game", targetMatch.gameName, true)
+          .addField(targetMatch.team1Name, `Tỉ lệ: ${targetMatch.team1Rate}`, true)
+          .addField("VS", ".", true)
+          .addField(targetMatch.team2Name, `Tỉ lệ: ${targetMatch.team2Rate}`, true)
+          .addBlankField()
+          .addField('Bạn đã cược:', newBet.prediction === 1 ? targetMatch.team1Name : targetMatch.team2Name + ' win, số tiền cược: ' + `${newBet.amount} 💵`)
+          .addField('Số vốn hiện có:', `${joinedSession.amount} 💵`);
+
+        return message.channel.send(ed);
       }
     } catch (_) {
       return message.reply("Có lỗi xảy ra, bot có thể đang bị quá tải ư ư ư");
