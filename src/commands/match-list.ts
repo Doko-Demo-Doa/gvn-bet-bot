@@ -37,6 +37,8 @@ export class MatchList extends Command {
       where: { result: null }
     });
 
+    console.log(dataset);
+
     const results = [...dataset];
 
     const queue = [];
