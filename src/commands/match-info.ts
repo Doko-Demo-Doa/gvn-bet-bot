@@ -65,9 +65,9 @@ export class MatchInfo extends Command {
         .addField("Match ID", resp.id, true)
         .addField("Game", resp.gameName, true)
         .addBlankField()
-        .addField(resp.team1Name + '1️⃣', `Tỉ lệ: ${resp.team1Rate} | ${team1BetCount} join`, true)
+        .addField(resp.team1Name, `Tỉ lệ: ${resp.team1Rate} | ${team1BetCount} join`, true)
         .addField("VS", ".", true)
-        .addField(resp.team2Name + '2️⃣', `Tỉ lệ: ${resp.team2Rate} | ${team2BetCount} join`, true)
+        .addField(resp.team2Name, `Tỉ lệ: ${resp.team2Rate} | ${team2BetCount} join`, true)
         .addBlankField();
 
       if (joinedSession) {
