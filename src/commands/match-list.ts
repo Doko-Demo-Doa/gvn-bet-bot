@@ -12,7 +12,8 @@ export class MatchList extends Command {
       group: "bet",
       memberName: "listbet",
       description: "Liệt kê các trận bet đang diễn ra.",
-      examples: ["listbet -limit 10"],
+      defaultHandling: true,
+      examples: ["listbet 10"],
       args: [
         {
           key: "limit",
@@ -32,7 +33,7 @@ export class MatchList extends Command {
   ): Promise<Message | Message[]> {
     // Get match list:
     const dataset = await DiscordMatch.find({
-      take: args["limit"],
+      take: args.limit,
       where: { result: null }
     });
 
