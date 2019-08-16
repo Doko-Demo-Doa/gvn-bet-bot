@@ -64,7 +64,7 @@ export class BetJoin extends Command {
       }
 
       if (moment().isAfter(moment(targetMatch.startTime, 'YYYY-MM-DD HH:mm'))) {
-        return message.reply(`Trận đấu đã bắt đầu, không thể bet hoặc đổi kèo.`);
+        return message.reply(`>>> Trận đấu đã bắt đầu, không thể bet hoặc đổi kèo.`);
       }
 
       let joinedSession = await DiscordBet.findOne({
