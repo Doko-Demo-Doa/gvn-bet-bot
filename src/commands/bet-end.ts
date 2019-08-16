@@ -35,7 +35,7 @@ export class BetEnd extends Command {
           label: 'Team thắng cuộc.',
           prompt: 'Chọn team thắng cuộc. Tiền sẽ được cộng cho tất cả những ai đặt cho team này, không thể sửa đổi.',
           type: 'integer',
-          min: 1,
+          min: 0,
           max: 2,
           wait: WAIT_TIME
         }
@@ -68,6 +68,25 @@ export class BetEnd extends Command {
     let winnersCount = 0;
 
     if (betSessions.length > 0) {
+      // If tie, chargeback money:
+      if (args.winner === 0) {
+        betSessions.forEach(async session => {
+          const linkedUser = await DiscordUser.findOne({ where: {
+            userId: session.userId
+          }});
+  
+          const addedAmount = session.amount;
+          linkedUser.currencyAmount = linkedUser.currencyAmount + addedAmount;
+          linkedUser.save();
+  
+          const dUserToSend = await client.fetchUser(linkedUser.userId);
+          dUserToSend.send(`Xin chào, trận đấu kết quả hoà, bạn được trả lại: ${addedAmount} 💵`);
+        });
+
+        return message.say('Trận đấu hoà!');
+      }
+
+      // If there is winner, add money to winners
       const winners = betSessions.filter(n => n.prediction === args.winner);
       winnersCount = winners.length;
 
@@ -82,7 +101,7 @@ export class BetEnd extends Command {
         linkedUser.save();
 
         const dUserToSend = await client.fetchUser(linkedUser.userId);
-        dUserToSend.send(`Xin chào, bạn đã thắng trận bet có mã là: ${targetMatch.id}. Số tiền bạn được cộng thêm là ${addedAmount}`)
+        dUserToSend.send(`Xin chào, bạn đã thắng trận bet có mã là: ${targetMatch.id}. Số tiền bạn được cộng thêm là ${addedAmount} 💵`);
       });
 
       return message.reply(`Đã đóng trận bet, trận này có ${winnersCount} bet thủ về bờ và ${totalCount - winnersCount} bet thủ ra đê.`);
