@@ -30,7 +30,7 @@ client
   })
   .on('messageReactionAdd', (reaction: MessageReaction, user: User) => {
     if (reaction.emoji.name === '📌' && reaction.count >= PIN_THRESHOLD) {
-      reaction.message.pin()
+      return reaction.message.pin()
     }
   })
   .on('messageReactionRemove', (reaction: MessageReaction, user: User) => {
