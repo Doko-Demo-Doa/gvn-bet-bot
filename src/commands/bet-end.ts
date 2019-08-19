@@ -96,7 +96,7 @@ export class BetEnd extends Command {
           userId: session.userId
         }});
 
-        const addedAmount = Math.ceil(session.amount + (session.amount * (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate)));
+        const addedAmount = Math.ceil(session.amount * (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate));
         linkedUser.currencyAmount = linkedUser.currencyAmount + addedAmount;
         linkedUser.save();
 
