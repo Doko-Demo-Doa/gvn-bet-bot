@@ -18,7 +18,7 @@ export class MatchList extends Command {
       args: [
         {
           key: "limit",
-          default: 5,
+          default: 4,
           label: "Giới hạn số lượng",
           prompt: "Nhập số lượng các trận bet đang diễn ra và có thể đặt cược.",
           type: "integer",
@@ -32,6 +32,9 @@ export class MatchList extends Command {
     message: CommandMessage,
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
+    // Count total match:
+    const numberOfMatches = await DiscordMatch.count();
+
     // Get match list:
     const dataset = await DiscordMatch.find({
       take: args["limit"],
@@ -68,7 +71,7 @@ export class MatchList extends Command {
     });
 
     const msgHeading = dataset.length > 0 ? stripIndents`
-    ** Danh sách các trận hiện có: **`
+    ** Danh sách các trận hiện có (tổng ${numberOfMatches} trận): **`
     : `Chưa có trận bet nào.`;
 
     return message.reply(msgHeading.concat('\n\n').concat(data.join("\n")));
