@@ -77,7 +77,7 @@ export class MatchList extends Command {
     });
 
     const msgHeading = dataset.length > 0 ? stripIndents`
-    ** Danh sách các trận hiện có (trang ${args.page} / ${Math.ceil(numberOfMatches / PER_PAGE)}): **`
+    ** Danh sách các trận hiện có (trang ): **`
     : `Chưa có trận bet nào.`;
 
     return message.reply(msgHeading.concat('\n\n').concat(data.join("\n")));
