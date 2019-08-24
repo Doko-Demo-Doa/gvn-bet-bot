@@ -6,6 +6,7 @@ import { DiscordBet } from "../entities/bet";
 const stripIndents = require("common-tags").stripIndents;
 
 const WAIT_TIME = 100;
+const PER_PAGE = 7;
 
 export class MatchList extends Command {
   constructor(client) {
@@ -13,15 +14,17 @@ export class MatchList extends Command {
       name: "listbet",
       group: "bet",
       memberName: "listbet",
+      argsPromptLimit: 0,
       description: "Liệt kê các trận bet đang diễn ra.",
       examples: ["listbet -limit 10"],
       args: [
         {
-          key: "limit",
-          default: 4,
-          label: "Giới hạn số lượng",
-          prompt: "Nhập số lượng các trận bet đang diễn ra và có thể đặt cược.",
+          key: "page",
+          default: 1,
+          label: "Số thứ tự trang",
+          prompt: "Nhập số số thứ tự của trang, mặc định là 1.",
           type: "integer",
+          min: 1,
           wait: WAIT_TIME
         }
       ]
@@ -39,7 +42,8 @@ export class MatchList extends Command {
 
     // Get match list:
     const dataset = await DiscordMatch.find({
-      take: args["limit"],
+      take: PER_PAGE,
+      skip: (args.page - 1) * PER_PAGE,
       where: { result: null }
     });
 
@@ -73,7 +77,7 @@ export class MatchList extends Command {
     });
 
     const msgHeading = dataset.length > 0 ? stripIndents`
-    ** Danh sách các trận hiện có (tổng ${numberOfMatches} trận có thể đặt): **`
+    ** Danh sách các trận hiện có (trang ${args.page} / ${(numberOfMatches / PER_PAGE).toFixed(0)}): **`
     : `Chưa có trận bet nào.`;
 
     return message.reply(msgHeading.concat('\n\n').concat(data.join("\n")));
