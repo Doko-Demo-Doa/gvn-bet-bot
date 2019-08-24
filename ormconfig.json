@@ -1,6 +1,6 @@
 {
   "type": "sqlite",
-  "database": "NadekoBot.db",
+  "database": "../NadekoBot/src/NadekoBot/bin/Release/netcoreapp2.1/data/NadekoBot.db",
   "synchronize": false,
   "logging": false,
   "entities": [
