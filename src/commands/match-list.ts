@@ -33,7 +33,9 @@ export class MatchList extends Command {
     args: object | any | string | string[]
   ): Promise<Message | Message[]> {
     // Count total match:
-    const numberOfMatches = await DiscordMatch.count();
+    const numberOfMatches = await DiscordMatch.count({
+      where: { result: null }
+    });
 
     // Get match list:
     const dataset = await DiscordMatch.find({
@@ -71,7 +73,7 @@ export class MatchList extends Command {
     });
 
     const msgHeading = dataset.length > 0 ? stripIndents`
-    ** Danh sách các trận hiện có (tổng ${numberOfMatches} trận): **`
+    ** Danh sách các trận hiện có (tổng ${numberOfMatches} trận có thể đặt): **`
     : `Chưa có trận bet nào.`;
 
     return message.reply(msgHeading.concat('\n\n').concat(data.join("\n")));
