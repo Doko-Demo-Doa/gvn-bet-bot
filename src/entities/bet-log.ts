@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToOne, JoinColumn } from "typeorm";
+import { DiscordUser } from "./user";
+import { DiscordMatch } from "./match";
 
 /**
  * Actual "bet" session.
@@ -19,9 +21,11 @@ export class DiscordBetLog extends BaseEntity {
   @Column({ name: "RecordDate" })
   recordDate: number; // Unix timestamp.
 
-  @Column({ name: "UserId" })
-  userId: string;
+  @JoinColumn()
+  @OneToOne(type => DiscordUser)
+  user: DiscordUser;
 
-  @Column({ name: "MatchId" })
-  matchId: string;
+  @JoinColumn()
+  @OneToOne(type => DiscordMatch)
+  match: DiscordMatch;
 }
