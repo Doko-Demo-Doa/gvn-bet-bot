@@ -1,5 +1,5 @@
 import { Command, CommandMessage } from 'discord.js-commando';
-import { Message } from 'discord.js';
+import { Message, RichEmbed } from 'discord.js';
 import { DiscordMatch } from '../entities/match';
 
 const stripIndents = require('common-tags').stripIndents;
@@ -65,6 +65,13 @@ export class BetCreate extends Command {
           prompt: 'Tên game, Có thể đặt tuỳ ý, càng gọn càng tốt. VD: dota, csgo',
           type: 'string',
           wait: WAIT_TIME + 50
+        },
+        {
+          key: 'tname',
+          label: 'Tên giải',
+          prompt: 'Tên giải, Có thể đặt tuỳ ý.',
+          type: 'string',
+          wait: WAIT_TIME + 50
         }
       ]
     });
@@ -80,6 +87,7 @@ export class BetCreate extends Command {
     m.team2Rate = args['a2'];
     m.startTime = args['time'];
     m.gameName = args['g'];
+    m.tournamentName = args['tname'];
 
     const time = moment(args.time, 'YYYY-MM-DD HH:mm')
 
@@ -89,23 +97,25 @@ export class BetCreate extends Command {
 
     const mSaved = await m.save();
 
-    const response = stripIndents`
-    Thông tin trận: ** ${args['t1']} vs ${args['t2']} ** (ID: ${mSaved.id})
-    Trận đấu diễn ra vào: ${args['time']}
-    **❯ Thông tin trận bet: ${args['g']}**
-    • Team 1: ${args['t1']} / Tỉ lệ: ${args['a1']}
-    • Team 2: ${args['t2']} / Tỉ lệ: ${args['a2']}
-    **❯ Chúc các bet thủ sớm ra đê!!! **
-  `;
+    const embedData = new RichEmbed()
+      .setColor("#127AB8")
+      .setTitle(`Thông tin trận - ID: ${mSaved.id}`)
+      .setTimestamp()
+      .addField("Diễn ra ngày", mSaved.startTime, true)
+      .addField("Game", mSaved.gameName, true)
+      .addField("Giải", mSaved.tournamentName, true)
+      .addBlankField()
+      .addField(mSaved.team1Name, `Tỉ lệ: ${mSaved.team1Rate}`, true)
+      .addField("VS", ".", true)
+      .addField(mSaved.team2Name, `Tỉ lệ: ${mSaved.team2Rate}`, true)
+      .addBlankField();
 
-    const genMessage = <any>await message.say(response);
+    const genMessage = <any>await message.channel.send(embedData);
 
     const scheduled = schedule.scheduleJob(time.toDate(), async () => {
-
-      const newMsg = <any>await message.channel.send(stripIndents`
-      Trận đấu đã bắt đầu:
-
-      ${response}`);
+      const newEmbedData = embedData;
+      newEmbedData.setTitle(`Trận đấu đã bắt đầu, thông tin trận - ID: ${mSaved.id}`);
+      const newMsg = <any>await message.channel.send(newEmbedData);
 
       newMsg.pin();
       scheduled.cancel();
