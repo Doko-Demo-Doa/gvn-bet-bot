@@ -35,13 +35,13 @@ export class BetLog extends Command {
     message: CommandMessage,
     args: object | DiscordUser | any | string | string[]
   ): Promise<Message | Message[]> {
-    console.log(args.user.id);
 
     const usr = await DiscordUser.findOne({ where: { userId: args.user.id } });
     if (!usr) return message.say("Không tìm được user này.");
 
     const results = await DiscordBetLog.find({
-      where: { user: usr }
+      where: { user: usr },
+      relations: ['user', 'match']
     });
 
     let messageBuilder = '';
@@ -49,10 +49,11 @@ export class BetLog extends Command {
     results.forEach((n, idx) => {
       messageBuilder += (
         `**[${moment.unix(n.recordDate).format('DD/MM/YYYY HH:mm')}]** [${n.actionType === 0 ? 'Đặt kèo' : 'Đổi team'}] ` +
-        `- Đặt cho team ${n.targetTeam}` 
+        `- Đặt cho team ${n.targetTeam}` + (n.actionType === 0 ? `Số tiền: ${n.moneyAmount}` : '') +
+        `- **(${n.match.team1Name} VS ${n.match.team2Name})**` +
+        `\n`
       );
     })
-    console.log(results);
 
     return message.reply(messageBuilder);
   }

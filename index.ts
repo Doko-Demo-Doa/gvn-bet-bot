@@ -20,8 +20,6 @@ createConnection()
     "RecordDate" integer NOT NULL,
     "DiscordUser" integer,
     "DiscordMatch" integer,
-    CONSTRAINT "REL_2ab65ed2ed24a5e1db7ab3aade" UNIQUE ("DiscordUser"),
-    CONSTRAINT "REL_9d4639676311a1316ff64f51d9" UNIQUE ("DiscordMatch"),
     CONSTRAINT "FK_2ab65ed2ed24a5e1db7ab3aade4" FOREIGN KEY ("DiscordUser") REFERENCES "DiscordUser" ("Id") ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT "FK_9d4639676311a1316ff64f51d98" FOREIGN KEY ("DiscordMatch") REFERENCES "DiscordMatch" ("Id") ON DELETE NO ACTION ON UPDATE NO ACTION)`);
   })
