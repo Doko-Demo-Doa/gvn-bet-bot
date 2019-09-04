@@ -11,21 +11,25 @@ export class DiscordBetLog extends BaseEntity {
   id: number;
 
   /**
-   * Prediction of the match:
-   * 1: Team 1 wins.
-   * 2: Team 2 wins.
+   * 0 = đặt kèo, 1 = change team.
    */
   @Column({ name: "ActionType" })
-  actionType: number; // 0 = đặt kèo, 1 = change team.
+  actionType: number;
+
+  @Column({ name: "TargetTeam" })
+  targetTeam: number;
+
+  @Column({ name: "MoneyAmount" })
+  moneyAmount: number;
 
   @Column({ name: "RecordDate" })
   recordDate: number; // Unix timestamp.
 
-  @JoinColumn()
+  @JoinColumn({ name: 'DiscordUser' })
   @OneToOne(type => DiscordUser)
   user: DiscordUser;
 
-  @JoinColumn()
+  @JoinColumn({ name: 'DiscordMatch' })
   @OneToOne(type => DiscordMatch)
   match: DiscordMatch;
 }

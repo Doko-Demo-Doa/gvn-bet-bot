@@ -4,6 +4,7 @@ import moment from "moment";
 import { DiscordUser } from "../entities/user";
 import { DiscordBet } from "../entities/bet";
 import { DiscordMatch } from "../entities/match";
+import { DiscordBetLog } from "../entities/bet-log";
 
 const stripIndents = require("common-tags").stripIndents;
 
@@ -50,8 +51,10 @@ export class BetChangeTeam extends Command {
         return message.reply(`Trận này đã kết thúc, không thể đổi được.`);
       }
 
-      if (moment().isAfter(moment(targetMatch.startTime, 'YYYY-MM-DD HH:mm'))) {
-        return message.reply(`Trận đấu đã bắt đầu, không thể bet hoặc đổi kèo.`);
+      if (moment().isAfter(moment(targetMatch.startTime, "YYYY-MM-DD HH:mm"))) {
+        return message.reply(
+          `Trận đấu đã bắt đầu, không thể bet hoặc đổi kèo.`
+        );
       }
 
       let joinedSession = await DiscordBet.findOne({
@@ -61,12 +64,29 @@ export class BetChangeTeam extends Command {
         }
       });
 
+      const targetUser = await DiscordUser.findOne({
+        where: {
+          userId: message.author.id
+        }
+      })
+
       if (joinedSession) {
         // Editing a joined session.
-        joinedSession.prediction = (joinedSession.prediction === 1) ? 2 : 1;
+        joinedSession.prediction = joinedSession.prediction === 1 ? 2 : 1;
         joinedSession.dateAdded = moment().format("YYYY-MM-DD HH:mm");
         joinedSession.save();
 
+        // Đặt log:
+        const newLog = new DiscordBetLog();
+        newLog.actionType = 1;
+        newLog.targetTeam = joinedSession.prediction;
+        newLog.moneyAmount = joinedSession.amount;
+        newLog.recordDate = moment().unix();
+        newLog.user = targetUser;
+        newLog.match = targetMatch;
+        newLog.save();
+
+        // In ra message:
         return message.reply(stripIndents`
         Bạn vừa thay đổi cửa đặt cho trận sau:
         Thông tin trận: ** ${targetMatch.team1Name} vs ${targetMatch.team2Name} ** (ID: ${targetMatch.id})
@@ -78,7 +98,9 @@ export class BetChangeTeam extends Command {
         **❯ Bạn đặt lại cho cửa team: ${joinedSession.prediction} **
       `);
       } else {
-        return message.reply(`Bạn chưa join kèo này, dùng lệnh \`.joinbet\` để tham gia`)
+        return message.reply(
+          `Bạn chưa join kèo này, dùng lệnh \`.joinbet\` để tham gia`
+        );
       }
     } catch (_) {
       return message.reply("Có lỗi xảy ra, bot có thể đang bị quá tải ư ư ư");

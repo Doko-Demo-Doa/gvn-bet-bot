@@ -4,6 +4,7 @@ import moment from "moment";
 import { DiscordUser } from "../entities/user";
 import { DiscordBet } from "../entities/bet";
 import { DiscordMatch } from "../entities/match";
+import { DiscordBetLog } from "../entities/bet-log";
 
 export class BetJoin extends Command {
   constructor(client) {
@@ -118,6 +119,16 @@ export class BetJoin extends Command {
           .addBlankField()
           .addField('Bạn đã cược:', (newBet.prediction === 1 ? targetMatch.team1Name : targetMatch.team2Name) + ' win, số tiền cược: ' + `${newBet.amount} 💵`)
           .addField('Số vốn hiện có:', `${targetUser.currencyAmount} 💵`);
+
+        // Đặt log:
+        const newLog = new DiscordBetLog();
+        newLog.actionType = 0;
+        newLog.targetTeam = newBet.prediction;
+        newLog.moneyAmount = args.amount;
+        newLog.recordDate = moment().unix();
+        newLog.user = targetUser;
+        newLog.match = targetMatch;
+        newLog.save();
 
         return message.channel.send(ed);
       }

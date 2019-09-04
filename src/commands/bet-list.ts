@@ -18,8 +18,8 @@ export class BetList extends Command {
       memberName: "mybetinfo",
       description: "Liệt kê các lượt bet của bạn.",
       examples: ["mybetinfo 10"],
-      argsPromptLimit: 0,
-      defaultHandling: false,
+      argsPromptLimit: 1,
+      autoAliases: true,
       args: [
         {
           key: "limit",

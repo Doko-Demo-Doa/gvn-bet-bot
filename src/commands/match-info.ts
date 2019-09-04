@@ -59,10 +59,10 @@ export class MatchInfo extends Command {
     if (resp) {
       const embedData = new RichEmbed()
         .setColor("#77B019")
-        .setTitle("Thông tin trận")
+        .setTitle(`Thông tin trận - ID: ${resp.id}`)
         .setTimestamp()
         .addField("Diễn ra ngày", resp.startTime, true)
-        .addField("Match ID", resp.id, true)
+        .addField("Giải", resp.tournamentName, true)
         .addField("Game", resp.gameName, true)
         .addBlankField()
         .addField(resp.team1Name, `Tỉ lệ: ${resp.team1Rate} | ${team1BetCount} join`, true)

@@ -8,23 +8,21 @@ createConnection()
   .then(async connection => {
     // await connection.query('PRAGMA foreign_keys=OFF');
     // await connection.synchronize();
-    connection.query(`
-      CREATE TABLE IF NOT EXISTS "DiscordBet"
-      ("Id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-      "Amount" integer NOT NULL,
-      "Prediction" integer NOT NULL,
-      "DateAdded" varchar NOT NULL,
-      "UserId" varchar NOT NULL,
-      "MatchId" varchar NOT NULL)`);
     
-    connection.query(`CREATE TABLE IF NOT EXISTS "DiscordMatch"
+    // Run only once after deployment.
+    // connection.query(`ALTER TABLE "DiscordMatch" ADD COLUMN "TournamentName"`);
+
+    connection.query(`CREATE TABLE IF NOT EXISTS "DiscordBetLog"
     ("Id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-    "Team1Name" varchar NOT NULL,
-    "Team1Rate" integer NOT NULL,
-    "Team2Name" varchar NOT NULL,
-    "Team2Rate" integer NOT NULL,
-    "Result" integer,
-    "StartTime" varchar NOT NULL,
-    "GameName" varchar)`);
+    "ActionType" integer NOT NULL,
+    "TargetTeam" integer NOT NULL,
+    "MoneyAmount" integer NOT NULL,
+    "RecordDate" integer NOT NULL,
+    "DiscordUser" integer,
+    "DiscordMatch" integer,
+    CONSTRAINT "REL_2ab65ed2ed24a5e1db7ab3aade" UNIQUE ("DiscordUser"),
+    CONSTRAINT "REL_9d4639676311a1316ff64f51d9" UNIQUE ("DiscordMatch"),
+    CONSTRAINT "FK_2ab65ed2ed24a5e1db7ab3aade4" FOREIGN KEY ("DiscordUser") REFERENCES "DiscordUser" ("Id") ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT "FK_9d4639676311a1316ff64f51d98" FOREIGN KEY ("DiscordMatch") REFERENCES "DiscordMatch" ("Id") ON DELETE NO ACTION ON UPDATE NO ACTION)`);
   })
   .catch(error => console.log(error));
