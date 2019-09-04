@@ -7,6 +7,7 @@ import { CheckMoney } from './check-money';
 import { BetChangeTeam } from './bet-change-team';
 import { BetList } from './bet-list';
 import { BetLog } from './bet-log-cmd';
+import { BetMoneyLog } from './bet-money-log';
 
 module.exports = [
   BetCreate,
@@ -17,5 +18,6 @@ module.exports = [
   CheckMoney,
   BetChangeTeam,
   BetList,
-  BetLog
+  BetLog,
+  BetMoneyLog
 ]

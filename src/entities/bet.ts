@@ -19,6 +19,14 @@ export class DiscordBet extends BaseEntity {
   @Column({ name: "Prediction" })
   prediction: number;
 
+  /**
+   * -1: Lose
+   * 0: Draw
+   * 1: Win
+   */
+  @Column({ name: "Result" })
+  result: number;
+
   @Column({ name: "DateAdded" })
   dateAdded: string;
 

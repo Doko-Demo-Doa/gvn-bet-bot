@@ -4,7 +4,6 @@ import moment from "moment";
 import { DiscordUser } from "../entities/user";
 import { DiscordBet } from "../entities/bet";
 import { DiscordMatch } from "../entities/match";
-import { DiscordBetLog } from "../entities/bet-log";
 
 const stripIndents = require("common-tags").stripIndents;
 
@@ -75,16 +74,6 @@ export class BetChangeTeam extends Command {
         joinedSession.prediction = joinedSession.prediction === 1 ? 2 : 1;
         joinedSession.dateAdded = moment().format("YYYY-MM-DD HH:mm");
         joinedSession.save();
-
-        // Đặt log:
-        const newLog = new DiscordBetLog();
-        newLog.actionType = 1;
-        newLog.targetTeam = joinedSession.prediction;
-        newLog.moneyAmount = joinedSession.amount;
-        newLog.recordDate = moment().unix();
-        newLog.user = targetUser;
-        newLog.match = targetMatch;
-        newLog.save();
 
         // In ra message:
         return message.reply(stripIndents`

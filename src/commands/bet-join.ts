@@ -5,6 +5,7 @@ import { DiscordUser } from "../entities/user";
 import { DiscordBet } from "../entities/bet";
 import { DiscordMatch } from "../entities/match";
 import { DiscordBetLog } from "../entities/bet-log";
+import { DiscordBetMoneyLog } from "../entities/bet-money-log";
 
 export class BetJoin extends Command {
   constructor(client) {
@@ -71,8 +72,6 @@ export class BetJoin extends Command {
         }
       });
 
-      console.log(joinedSession);
-
       if (joinedSession) {
         return message.reply(`Bạn đã vào kèo này rồi, dùng lệnh changeteam để đổi kèo.`)
       } else {
@@ -120,7 +119,7 @@ export class BetJoin extends Command {
           .addField('Bạn đã cược:', (newBet.prediction === 1 ? targetMatch.team1Name : targetMatch.team2Name) + ' win, số tiền cược: ' + `${newBet.amount} 💵`)
           .addField('Số vốn hiện có:', `${targetUser.currencyAmount} 💵`);
 
-        // Đặt log:
+        // Đặt log tham gia trận:
         const newLog = new DiscordBetLog();
         newLog.actionType = 0;
         newLog.targetTeam = newBet.prediction;
@@ -129,6 +128,15 @@ export class BetJoin extends Command {
         newLog.user = targetUser;
         newLog.match = targetMatch;
         newLog.save();
+
+        // Đặt log tiền:
+        const nMoneyLog = new DiscordBetMoneyLog();
+        nMoneyLog.moneyAmount = -args.amount; // Trừ tiền
+        nMoneyLog.recordDate = moment().unix();
+        nMoneyLog.reason = 0;
+        nMoneyLog.user = targetUser;
+        nMoneyLog.match = targetMatch;
+        nMoneyLog.save();
 
         return message.channel.send(ed);
       }

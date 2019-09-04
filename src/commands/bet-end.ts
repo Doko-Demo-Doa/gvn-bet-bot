@@ -5,6 +5,7 @@ import { DiscordUser } from '../entities/user';
 import { DiscordBet } from '../entities/bet';
 import { DiscordMatch } from '../entities/match';
 import { client } from '../app-loader';
+import { DiscordBetMoneyLog } from '../entities/bet-money-log';
 
 const WAIT_TIME = 100
 
@@ -74,20 +75,40 @@ export class BetEnd extends Command {
           const linkedUser = await DiscordUser.findOne({ where: {
             userId: session.userId
           }});
+
+          session.result = 0; // Set kết quả hoà.
+          session.save();
   
           const addedAmount = session.amount;
           linkedUser.currencyAmount = linkedUser.currencyAmount + addedAmount;
           linkedUser.save();
+
+            // Đặt log tiền:
+          const nMoneyLog = new DiscordBetMoneyLog();
+          nMoneyLog.moneyAmount = addedAmount; // Cộng tiền
+          nMoneyLog.recordDate = moment().unix();
+          nMoneyLog.reason = 1;
+          nMoneyLog.user = linkedUser;
+          nMoneyLog.match = targetMatch;
+          nMoneyLog.save();
   
           const dUserToSend = await client.fetchUser(linkedUser.userId);
           dUserToSend.send(`Xin chào, trận đấu kết quả hoà, bạn được trả lại: ${addedAmount} 💵`);
         });
 
+        
         return message.say('Trận đấu hoà!');
       }
 
       // If there is winner, add money to winners
       const winners = betSessions.filter(n => n.prediction === args.winner);
+
+      const losers = betSessions.filter(n => n.prediction !== args.winner);
+      losers.forEach(s => {
+        s.result = -1;
+        s.save();
+      })
+
       winnersCount = winners.length;
 
       // Only winners get the prize:
@@ -96,9 +117,21 @@ export class BetEnd extends Command {
           userId: session.userId
         }});
 
+        session.result = 1;
+        session.save();
+
         const addedAmount = Math.ceil(session.amount * (args.winner === 1 ? targetMatch.team1Rate : targetMatch.team2Rate));
         linkedUser.currencyAmount = linkedUser.currencyAmount + addedAmount;
         linkedUser.save();
+
+        // Đặt log tiền:
+        const nMoneyLog = new DiscordBetMoneyLog();
+        nMoneyLog.moneyAmount = addedAmount; // Cộng tiền
+        nMoneyLog.recordDate = moment().unix();
+        nMoneyLog.reason = 2;
+        nMoneyLog.user = linkedUser;
+        nMoneyLog.match = targetMatch;
+        nMoneyLog.save();
 
         const dUserToSend = await client.fetchUser(linkedUser.userId);
         dUserToSend.send(`Xin chào, bạn đã thắng trận bet có mã là: ${targetMatch.id}. Số tiền bạn được cộng thêm là ${addedAmount} 💵`);
