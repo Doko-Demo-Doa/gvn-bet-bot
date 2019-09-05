@@ -10,8 +10,8 @@ createConnection()
     // await connection.synchronize();
 
     // Run only once after deployment.
-    // connection.query(`ALTER TABLE "DiscordMatch" ADD COLUMN "TournamentName"`);
-    // connection.query(`ALTER TABLE "DiscordBet" ADD COLUMN "Result"`);
+    connection.query(`ALTER TABLE "DiscordMatch" ADD COLUMN "TournamentName"`);
+    connection.query(`ALTER TABLE "DiscordBet" ADD COLUMN "Result"`);
 
     connection.query(`CREATE TABLE IF NOT EXISTS "DiscordBetLog"
     ("Id" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
