@@ -55,6 +55,8 @@ export class BetLog extends Command {
       relations: ['user', 'match']
     });
 
+    if (results.length <= 0) return message.reply('Bạn chưa có lượt bet nào cả, yolo đê đời là mấy.')
+
     let messageBuilder = '';
     messageBuilder += (`Sau đây là log lượt bet của ${usr.username} : \n\n`);
     results.forEach((n, idx) => {
