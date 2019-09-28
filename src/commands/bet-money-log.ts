@@ -58,7 +58,7 @@ export class BetMoneyLog extends Command {
     });
 
     let messageBuilder = '';
-    messageBuilder += (`Danh sách log tiền thuế của <@${usr.userId}> : \n\n`);
+    messageBuilder += (`Danh sách log tiền thuế của ${usr.username} : \n\n`);
     results.forEach((n, idx) => {
       messageBuilder += (
         `${n.moneyAmount >= 0 ? '🔵' : '🔴'}` +

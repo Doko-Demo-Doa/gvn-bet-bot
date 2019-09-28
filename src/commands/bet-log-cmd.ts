@@ -56,7 +56,7 @@ export class BetLog extends Command {
     });
 
     let messageBuilder = '';
-    messageBuilder += (`Sau đây là log lượt bet của <@${usr.userId}> : \n\n`);
+    messageBuilder += (`Sau đây là log lượt bet của ${usr.username} : \n\n`);
     results.forEach((n, idx) => {
       messageBuilder += (
         `**[${moment.unix(n.recordDate).format('DD/MM/YYYY HH:mm')}]** [${n.actionType === 0 ? 'Đặt kèo' : 'Đổi team'}] ` +
