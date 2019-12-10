@@ -27,7 +27,7 @@ export class DiscordMatch extends BaseEntity {
 
   /**
    * Users cannot join after this date.
-   * Will be calculated using dayjs.
+   * Will be calculated using moment.
    */
   @Column({ name: "StartTime", nullable: false })
   startTime: string;
