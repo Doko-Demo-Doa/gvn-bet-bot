@@ -1,0 +1,1 @@
+pm2 start --name BetBot npm -- start
