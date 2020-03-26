@@ -25,10 +25,10 @@ client
     console.log(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
     client.user.setActivity('Gambling and Pin Bot');
   })
-  .on('message', (msg: Message) => {
+  .on('message', async (msg: Message) => {
     // Code...
-    if (msg.content.startsWith('!nsfw')) {
-      msg.channel.send(msg.content.replace('!nsfw', ''), {
+    if (msg.content && msg.content.startsWith('!nsfw') || msg.content.startsWith('!ns')) {
+      await msg.reply(msg.content.replace('!nsfw', '').replace('!ns', ''), {
         files: msg.attachments.map(n => ({
           attachment: n.url,
           name: `SPOILER_${n.filename}`
@@ -51,11 +51,11 @@ client
   .on('commandError', (cmd, err) => {
     console.log(err);
     if (err instanceof client.FriendlyError) return;
-		console.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
+    console.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
   })
   .on('unknownCommand', (cmd, err) => {
     return '';
-	})
+  })
 
 client.registry
   .registerGroups([
