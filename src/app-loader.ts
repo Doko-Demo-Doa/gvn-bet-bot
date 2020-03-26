@@ -1,4 +1,4 @@
-import { MessageReaction, User, Emoji, ReactionEmoji } from 'discord.js';
+import { MessageReaction, User, Message } from 'discord.js';
 //   "database": "../NadekoBot/src/NadekoBot/bin/Release/netcoreapp2.1/data/NadekoBot.db",
 
 const Commando = require('discord.js-commando')
@@ -25,18 +25,27 @@ client
     console.log(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
     client.user.setActivity('Gambling and Pin Bot');
   })
-  .on('message', (msg: any) => {
+  .on('message', (msg: Message) => {
     // Code...
+    if (msg.content.startsWith('!nsfw')) {
+      msg.channel.send(msg.content.replace('!nsfw', ''), {
+        files: msg.attachments.map(n => ({
+          attachment: n.url,
+          name: `SPOILER_${n.filename}`
+        }))
+      });
+      msg.delete();
+    }
   })
   .on('messageReactionAdd', (reaction: MessageReaction, user: User) => {
     if (reaction.emoji.name === '📌' && reaction.count >= PIN_THRESHOLD) {
-      return reaction.message.pin()
+      return reaction.message.pin();
     }
   })
   .on('messageReactionRemove', (reaction: MessageReaction, user: User) => {
     const pinCount = reaction.message.reactions.filter(n => n.emoji.name === '📌').size
     if (pinCount < PIN_THRESHOLD) {
-      reaction.message.unpin()
+      reaction.message.unpin();
     }
   })
   .on('commandError', (cmd, err) => {

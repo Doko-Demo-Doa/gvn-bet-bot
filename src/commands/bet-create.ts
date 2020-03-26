@@ -1,4 +1,4 @@
-import { Command, CommandMessage } from 'discord.js-commando';
+import { Command, CommandMessage, CommandoClient } from 'discord.js-commando';
 import { Message, RichEmbed } from 'discord.js';
 import { DiscordMatch } from '../entities/match';
 
@@ -11,7 +11,7 @@ moment.tz.setDefault("Asia/Ho_Chi_Minh");
 const WAIT_TIME = 100
 
 export class BetCreate extends Command {
-  constructor(client) {
+  constructor(client: CommandoClient) {
     super(client, {
       name: 'createbet',
       group: 'bet',
@@ -115,7 +115,7 @@ export class BetCreate extends Command {
     const scheduled = schedule.scheduleJob(time.toDate(), async () => {
       const newEmbedData = embedData;
       newEmbedData.setTitle(`Trận đấu đã bắt đầu, thông tin trận - ID: ${mSaved.id}`);
-      const newMsg = <any>await message.channel.send(newEmbedData);
+      const newMsg: Message = await message.channel.send(newEmbedData);
 
       newMsg.pin();
       scheduled.cancel();
