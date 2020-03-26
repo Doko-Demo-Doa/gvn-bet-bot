@@ -115,7 +115,7 @@ export class BetCreate extends Command {
     const scheduled = schedule.scheduleJob(time.toDate(), async () => {
       const newEmbedData = embedData;
       newEmbedData.setTitle(`Trận đấu đã bắt đầu, thông tin trận - ID: ${mSaved.id}`);
-      const newMsg: Message = await message.channel.send(newEmbedData);
+      const newMsg = <any>await message.channel.send(newEmbedData);
 
       newMsg.pin();
       scheduled.cancel();
