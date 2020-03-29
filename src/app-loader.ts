@@ -23,7 +23,7 @@ const client = new Commando.Client({
 client
   .on('ready', () => {
     console.log(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
-    client.user.setActivity('Gambling and Pin Bot');
+    client.user.setActivity('Gambling Bot');
   })
   .on('message', async (msg: Message) => {
     // Code...
