@@ -1,4 +1,4 @@
-import { MessageReaction, User, Message } from 'discord.js';
+import { Message } from 'discord.js';
 //   "database": "../NadekoBot/src/NadekoBot/bin/Release/netcoreapp2.1/data/NadekoBot.db",
 
 const Commando = require('discord.js-commando')
@@ -35,17 +35,6 @@ client
         }))
       });
       msg.delete();
-    }
-  })
-  .on('messageReactionAdd', (reaction: MessageReaction, user: User) => {
-    if (reaction.emoji.name === '📌' && reaction.count >= PIN_THRESHOLD) {
-      return reaction.message.pin();
-    }
-  })
-  .on('messageReactionRemove', (reaction: MessageReaction, user: User) => {
-    const pinCount = reaction.message.reactions.filter(n => n.emoji.name === '📌').size
-    if (pinCount < PIN_THRESHOLD) {
-      reaction.message.unpin();
     }
   })
   .on('commandError', (cmd, err) => {
